@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Perfume Shelf</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="static/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>My Perfume Shelf</h1>
+    <input id="search" type="search" placeholder="Search perfumes…" autocomplete="off" />
+    <label class="badge">
+      <input id="editToggle" type="checkbox" style="vertical-align: middle; margin-right:6px;" />
+      Edit mode
+    </label>
+  </header>
+
+  <main class="container">
+    <!-- Add/Update form (shown always; harmless if unused) -->
+    <form id="addForm" class="panel">
+  <input name="name" placeholder="Name" required />
+  <input name="brand" placeholder="Brand" required />
+  <input name="img" id="imgPath" placeholder="Image path (auto-filled when you upload)" />
+  <input type="file" id="imgFile" accept=".jpg,.jpeg,.png,.webp" />
+  <input name="notes" placeholder="Notes (optional)" />
+  <button type="submit" class="badge">Add / Update</button>
+</form>
+
+
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <script src="static/app.js"></script>
+</body>
+</html>

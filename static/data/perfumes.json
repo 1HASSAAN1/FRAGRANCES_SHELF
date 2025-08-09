@@ -1,0 +1,114 @@
+[
+  {
+    "id": "invictus",
+    "name": "Invictus",
+    "brand": "Paco Rabanne",
+    "img": "static/img/invictus.jpg",
+    "notes": "Fresh aquatic citrus with ambergris vibe. Great gym/daytime."
+  },
+  {
+    "id": "mtj-studio",
+    "name": "Studio",
+    "brand": "MTJ",
+    "img": "static/img/mtj-studio.webp",
+    "notes": "Clean woody-aromatic; office-safe and versatile."
+  },
+  {
+    "id": "mtj-mahnoor",
+    "name": "Mahnoor",
+    "brand": "MTJ",
+    "img": "static/img/mtj-mahnoor.webp",
+    "notes": "White florals + musk; soft, slightly sweet."
+  },
+  {
+    "id": "mtj-ombre-black",
+    "name": "Ombre Black",
+    "brand": "MTJ",
+    "img": "static/img/mtj-ombre-black.jpg?v=2",
+    "notes": "Dark vanilla/woods mood—evening friendly."
+  },
+  {
+    "id": "lattafa-khamrah",
+    "name": "Khamrah",
+    "brand": "Lattafa",
+    "img": "static/img/khamrah.webp",
+    "notes": "Cinnamon, praline, boozy sweetness; cozy cold-weather beast."
+  },
+  {
+    "id": "janan-platinum",
+    "name": "Janan Platinum",
+    "brand": "J.",
+    "img": "static/img/janan_platinum.webp",
+    "notes": "Elegant woody-spicy fragrance with a warm, long-lasting base."
+  },
+  {
+    "id": "janan-vanilla",
+    "name": "Janan Vanilla",
+    "brand": "J.",
+    "img": "static/img/j._janan_vanilla.webp",
+    "notes": "Sweet and creamy vanilla fragrance with a smooth, comforting dry-down."
+  },
+  {
+    "id": "janan-sport",
+    "name": "Janan Sport",
+    "brand": "J.",
+    "img": "static/img/j._janan_sport.webp",
+    "notes": "Fresh, energetic citrus and aromatic blend — ideal for casual wear."
+  },
+  {
+    "id": "janan-gold",
+    "name": "Janan Gold",
+    "brand": "J.",
+    "img": "static/img/j._janan_gold.webp",
+    "notes": "Rich, warm oriental blend with a luxurious amber and spice profile."
+  },
+  {
+    "id": "janan-intense",
+    "name": "Janan Intense",
+    "brand": "J.",
+    "img": "static/img/j._janan_intense.webp",
+    "notes": "Deep, bold oriental fragrance with rich spices and woods."
+  },
+  {
+    "id": "janan-tobacco",
+    "name": "Janan Tobacco",
+    "brand": "J.",
+    "img": "static/img/j._janan_tobacco.webp",
+    "notes": "Warm, sweet tobacco accord with hints of honey and spice."
+  },
+  {
+    "id": "janan-oud",
+    "name": "Janan Oud",
+    "brand": "J.",
+    "img": "static/img/j._janan_oud.webp",
+    "notes": "Opulent oud fragrance with smoky, resinous depth."
+  },
+  {
+    "id": "j-marine",
+    "name": "J. Marine",
+    "brand": "J.",
+    "img": "static/img/j._j._marine.webp",
+    "notes": "Aquatic and refreshing scent with marine notes and light woods."
+  },
+  {
+    "id": "j-frontline",
+    "name": "J. Frontline",
+    "brand": "J.",
+    "img": "static/img/j._j._frontline-1.webp",
+    "notes": "Bold and energetic fragrance with fresh spices and citrus."
+  },
+  {
+    "id": "j-great-summit",
+    "name": "J. Great Summit",
+    "brand": "J.",
+    "img": "static/img/j._j._great_summit.webp",
+    "notes": "Adventurous woody-aromatic blend inspired by the great outdoors."
+  },
+  {
+    "name": "Bade'e Al Oud Oud for Glory",
+    "brand": "Lattafa",
+    "img": "static/img/lattafa_badee_al_oud_oud_for_glory.webp",
+    "notes": "Top notes are Saffron, Nutmeg and Lavender; middle notes are Agarwood (Oud) and Patchouli; base notes are Agarwood (Oud), Patchouli and Musk.",
+    "id": "lattafa-bade-e-al-oud-oud-for-glory"
+  }
+]
