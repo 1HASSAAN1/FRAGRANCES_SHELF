@@ -5,6 +5,7 @@
   <title>Perfume Shelf</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="static/styles.css" />
+
 </head>
 <body>
   <header class="header">
@@ -23,14 +24,21 @@
   <input name="brand" placeholder="Brand" required />
   <input name="img" id="imgPath" placeholder="Image path (auto-filled when you upload)" />
   <input type="file" id="imgFile" accept=".jpg,.jpeg,.png,.webp" />
+  <div class="preview hidden" id="imgPreviewWrap">
+    <img id="imgPreview" alt="Preview">
+  </div>
   <input name="notes" placeholder="Notes (optional)" />
   <button type="submit" class="badge">Add / Update</button>
 </form>
 
 
+
     <div id="grid" class="grid"></div>
   </main>
 
-  <script src="static/app.js"></script>
+  <!-- was: <script src="static/app.js"></script> -->
+<script src="static/app.js" defer></script>
+<div id="zoomBox" class="zoom"></div>
+
 </body>
 </html>

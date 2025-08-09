@@ -110,5 +110,54 @@
     "img": "static/img/lattafa_badee_al_oud_oud_for_glory.webp",
     "notes": "Top notes are Saffron, Nutmeg and Lavender; middle notes are Agarwood (Oud) and Patchouli; base notes are Agarwood (Oud), Patchouli and Musk.",
     "id": "lattafa-bade-e-al-oud-oud-for-glory"
+  },
+  {
+    "name": "Wasim Akram 502",
+    "brand": "J.",
+    "img": "static/img/j._wasim_akram_502.webp",
+    "notes": "Top notes are Cardamom, Apple and Sweet Orange; middle notes are Juniper Berries, Lavender and Clary Sage; base notes are Patchouli, Amber and Oakmoss.",
+    "id": "j-wasim-akram-502"
+  },
+  {
+    "name": "Sultan",
+    "brand": "Saeed Ghani",
+    "img": "static/img/saeed_ghani_sultan.webp",
+    "notes": "Top Notes: Cardamom and Amber  Middle Notes: Leather,Jasmine, Spices  Base Notes: Oakmoss and Patchouli",
+    "id": "saeed-ghani-sultan"
+  },
+  {
+    "name": "Shah Intense",
+    "brand": "Saeed Ghani",
+    "img": "static/img/saeed_ghani_shah_intense.webp",
+    "notes": "Top Notes: Cardamom  Middle Notes: Leather and Jasmine Sambac  Base Notes: Amber, Moss and Patchouli",
+    "id": "saeed-ghani-shah-intense"
+  },
+  {
+    "name": "Haider",
+    "brand": "Saeed Ghani",
+    "img": "static/img/saeed_ghani_haider.webp",
+    "notes": "Notes - Top Notes: Pineapple, Bergamot, Black Currant and Apple  Middle Notes: Birch, Patchouli, Moroccan Jasmine and Rose  Base Notes: Musk, Oak Moss, Ambergris and Vanilla",
+    "id": "saeed-ghani-haider"
+  },
+  {
+    "name": "Ghilaf e Kaaba",
+    "brand": "Saeed Ghani",
+    "img": "static/img/saeed_ghani_ghilaf_e_kaaba.webp",
+    "notes": "top notes of vetiver and woody notes. In the keynote. there is a touch of warm and spicy notes giving off a luxurious aroma. In base, notes are of agarwood, musk, and sandalwood.",
+    "id": "saeed-ghani-ghilaf-e-kaaba"
+  },
+  {
+    "name": "Khan",
+    "brand": "Saeed Ghani",
+    "img": "static/img/saeed_ghani_khan.webp",
+    "notes": "Top Notes: Lemon, Mint, Pink Pepper, Grapefruit Middle Notes: Ginger, Nutmeg, Jasmine Base Notes: Incense, Cedar, Sandalwood, Patchouli, White Musk",
+    "id": "saeed-ghani-khan"
+  },
+  {
+    "name": "Shahi Khus",
+    "brand": "Saeed Ghani",
+    "img": "static/img/saeed_ghani_shahi_khus.webp",
+    "notes": "Top Notes: Bergamot, Pink Pepper and Iris  Middle Notes: Jasmine, Vetiver and Almond  Base Notes: Sandalwood, Tonka Bean and Patchouli",
+    "id": "saeed-ghani-shahi-khus"
   }
 ]

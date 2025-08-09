@@ -1,256 +1,151 @@
 /* ===== Theme ===== */
-:root {
-  --bg: #0b0b0b;
-  --fg: #f6f6f6;
-  --muted: #a8a8a8;
+:root{
+  --bg: radial-gradient(120% 120% at 50% -10%, #111 0%, #0a0a0a 40%, #070707 100%);
+  --surface: #101010;
   --card: #141414;
-  --ring: #2a2a2a;
+  --fg: #f6f6f6;
+  --muted: #a9a9a9;
+  --ring: #2b2b2b;
+  --ring-strong: #3a3a3a;
+  --accent: #7bd8ff;
+  --danger: #ff6b6b;
 }
 
-* { box-sizing: border-box; }
-html, body {
-  margin: 0; padding: 0;
-  background: var(--bg); color: var(--fg);
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-}
 
-/* ===== Header / Controls ===== */
-.header {
-  position: sticky; top: 0; z-index: 10;
-  background: linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.6) 70%, rgba(0,0,0,0));
-  backdrop-filter: blur(6px);
-  padding: 16px 20px; display: flex; gap: 12px; align-items: center;
-  border-bottom: 1px solid var(--ring);
-}
-.header h1 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: .2px; }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;color:var(--fg);background:#0a0a0a;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+body{background-image:var(--bg);background-attachment:fixed}
 
-#search {
-  flex: 1; max-width: 520px;
-  background: #0e0e0e; color: var(--fg);
-  border: 1px solid var(--ring); border-radius: 14px;
-  padding: 12px 14px; outline: none;
+/* ===== Header ===== */
+.header{
+  position:sticky;top:0;z-index:20;
+  padding:16px 20px;
+  display:flex;gap:12px;align-items:center;
+  background:rgba(10,10,10,.6);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--ring);
 }
-#search::placeholder { color: var(--muted); }
-/* Editor panel + delete button */
-.panel {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin: 12px 20px 0;
-}
-.panel input { background:#0e0e0e; color:var(--fg); border:1px solid var(--ring); border-radius:10px; padding:10px 12px; }
-.panel .badge { grid-column: span 1; }
+.header h1{margin:0;font-size:22px;font-weight:800;letter-spacing:.2px}
 
-.delete-btn {
-  position: absolute; top: 8px; right: 8px;
-  background: #2a2a2a; border: 1px solid #3a3a3a; color:#eee;
-  font-size: 11px; padding: 4px 8px; border-radius: 999px; display: none;
+#search{
+  flex:1;max-width:560px;
+  background:#0e0e0e;border:1px solid var(--ring);
+  padding:12px 14px;border-radius:14px;outline:none;color:var(--fg);
 }
-.editing .delete-btn { display: inline-block; }
-
-
-.badge {
-  border: 1px solid #2d2d2d; color: #dcdcdc;
-  padding: 6px 10px; border-radius: 999px; font-size: 12px;
-  background: #131313; cursor: pointer;
+#search:focus{border-color:var(--ring-strong);box-shadow:0 0 0 3px rgba(123,216,255,.12)}
+.badge{
+  border:1px solid var(--ring);background:#121212;color:#eaeaea;
+  padding:8px 12px;border-radius:999px;font-size:12px;cursor:pointer;
 }
-.badge:hover { border-color: #3a3a3a; }
+.badge:hover{border-color:var(--ring-strong)}
 
 /* ===== Layout ===== */
-.container { max-width: 1100px; margin: 24px auto; padding: 0 20px 40px; }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 16px;
+.container{max-width:1180px;margin:22px auto;padding:0 20px 48px}
+
+/* ===== Editor panel ===== */
+.panel{
+  display:grid;gap:10px;margin:0 0 18px 0;
+  grid-template-columns: repeat(6, minmax(0,1fr));
+  align-items:start;
+}
+.panel input{
+  background:#0f0f0f;border:1px solid var(--ring);border-radius:12px;
+  padding:11px 12px;color:var(--fg);outline:none;
+}
+.panel input:focus{border-color:var(--ring-strong);box-shadow:0 0 0 3px rgba(123,216,255,.10)}
+.panel input[name="name"]{grid-column:span 2}
+.panel input[name="brand"]{grid-column:span 1}
+.panel #imgPath{grid-column:span 2}
+.panel #imgFile{grid-column:span 2;border:1px dashed var(--ring);color:var(--muted);background:#0d0d0d}
+.panel input[name="notes"]{grid-column:span 3}
+.panel .badge{grid-column:span 1;justify-self:start}
+
+/* preview */
+.preview{
+  grid-column: span 1;
+  border:1px solid var(--ring);
+  background:#0f0f0f;border-radius:12px;overflow:hidden;
+  display:grid;place-items:center;aspect-ratio:3/4;
+}
+.preview img{width:100%;height:100%;object-fit:cover}
+
+/* ===== Grid / Cards ===== */
+.grid{
+  display:grid;gap:18px;
+  grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
 }
 
-/* ===== Card ===== */
-.card {
-  position: relative;
+.card{
+  position:relative;overflow:hidden;
+  border:1px solid var(--ring);
+  background:linear-gradient(180deg,#171717,#121212);
+  border-radius:18px;padding:14px;
+  display:flex;flex-direction:column;gap:10px;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+.card:hover{transform:translateY(-3px);border-color:var(--ring-strong);box-shadow:0 16px 38px rgba(0,0,0,.35)}
+
+.thumb-wrap{
+  position:relative;border-radius:14px;overflow:hidden;
+  border:1px solid #1b1b1b;
+  background: radial-gradient(120% 120% at 50% 10%, #1a1a1a 0%, #0e0e0e 70%);
+  aspect-ratio:3/4;
+}
+.thumb{width:100%;height:100%;object-fit:cover;object-position:center;image-rendering:auto}
+
+.meta{display:flex;flex-direction:column;gap:4px}
+.name{font-weight:800;letter-spacing:.2px}
+.brand{font-size:12px;color:var(--muted)}
+
+/* Notes */
+.notes{
+  margin-top:6px;font-size:12px;line-height:1.45;color:#f1f1f1;
+  background:rgba(255,255,255,.04);border:1px solid var(--ring);
+  border-radius:10px;padding:8px 10px;max-height:0;opacity:0;overflow:hidden;
+  transition:max-height .25s ease, opacity .18s ease, transform .18s ease;
+  transform:translateY(-4px);
+}
+.card:hover .notes,.card.open .notes{max-height:240px;opacity:1;transform:translateY(0)}
+
+/* Floating icon controls (edit mode) */
+.controls{
+  position:absolute;top:10px;right:10px;display:none;gap:8px;z-index:5
+}
+.editing .controls{display:flex}
+.icon-btn{
+  width:36px;height:36px;display:grid;place-items:center;
+  border-radius:999px;border:1px solid var(--ring);background:rgba(0,0,0,.55);
+  cursor:pointer;backdrop-filter: blur(3px);
+}
+.icon-btn svg{width:18px;height:18px;fill:#eaeaea}
+.icon-btn:hover{border-color:var(--ring-strong)}
+.icon-btn.delete{background:rgba(150,0,0,.75)}
+.icon-btn.delete:hover{background:rgba(180,0,0,.85)}
+
+/* Utils */
+.hidden{display:none!important}
+
+.zoom {
+  position: fixed;
+  width: 280px;
+  height: 360px; /* maintain 3:4 */
   border: 1px solid var(--ring);
-  background: linear-gradient(180deg, #121212, #0f0f0f);
-  border-radius: 16px;
-  padding: 12px;
-  display: flex; flex-direction: column; gap: 10px;
-  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-  overflow: hidden;
-}
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,.35);
-  border-color: #3a3a3a;
-}
-
-/* Image wrapper */
-.thumb-wrap {
-  position: relative;
-  aspect-ratio: 3/4;
   border-radius: 14px;
-  overflow: hidden;
-  background: radial-gradient(120% 120% at 50% 10%, #1a1a1a, #0f0f0f 65%);
-  border: 1px solid #1f1f1f;
-  transition: box-shadow .2s ease, transform .2s ease;
-}
-
-.thumb {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  /* remove transforms to avoid blur */
-  transform: none;
-  image-rendering: auto;
-}
-
-/* No image scaling on hover; just lift the card a bit */
-.card { transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(0,0,0,.35);
-  border-color: #3a3a3a;
-}
-/* Larger cards */
-.grid {
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* was 180px */
-}
-
-/* Bigger delete + edit buttons on cards (visible in Edit mode) */
-.card {
-  padding-top: 16px;
-}
-.card .controls {
-  position: absolute; top: 8px; right: 8px;
-  display: none; gap: 8px;
-}
-.editing .card .controls { display: flex; }
-
-.card-btn {
-  background: #2a2a2a; border: 1px solid #3a3a3a; color:#eee;
-  font-size: 12px; padding: 6px 10px; border-radius: 999px; cursor: pointer;
-}
-.card-btn:hover { border-color:#5a5a5a; }
-
-/* Make the delete look bold */
-.card-btn.delete { background:#3a2020; border-color:#6b2b2b; }
-.card-btn.delete:hover { background:#5a2b2b; }
-
-/* Form layout: now 5 columns because we added a file input */
-.panel {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
-#imgFile { border:1px dashed var(--ring); border-radius:10px; padding:10px; background:#0e0e0e; color:var(--muted); }
-
-
-/* If you still see blur on any specific image, force 'contain' for that one */
-.thumb.contain { object-fit: contain; background: #0e0e0e; }
-
-/* Notes styling */
-.notes {
-  margin-top: 6px;
-  font-size: 12px;
-  line-height: 1.45;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--ring);
-  border-radius: 10px;
-  padding: 8px 10px;
-  max-height: 0;
+  box-shadow: 0 14px 40px rgba(0,0,0,.5);
+  background-size: 200%; /* how “zoomed” */
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 999;
+  pointer-events: none;
   opacity: 0;
-  overflow: hidden;
-  transition: max-height .25s ease, opacity .2s ease, transform .2s ease;
-  transform: translateY(-4px);
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 0.2s ease,
+    top 0.15s ease,
+    left 0.15s ease;
 }
 
-.card:hover .notes,
-.card.open .notes {
-  max-height: 240px;
+.zoom.visible {
   opacity: 1;
-  transform: translateY(0);
 }
-.card .controls {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 2;
-}
-
-.card-btn {
-  background: rgba(0,0,0,0.7);
-  border: 1px solid var(--ring);
-  color: #fff;
-  font-size: 14px;
-  padding: 6px 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  min-width: 50px;
-  text-align: center;
-}
-
-.card-btn.delete {
-  background: rgba(130, 0, 0, 0.8);
-}
-.card-btn.delete:hover {
-  background: rgba(180, 0, 0, 0.9);
-}
-.card-btn.edit {
-  background: rgba(0, 80, 130, 0.8);
-}
-.card-btn.edit:hover {
-  background: rgba(0, 110, 180, 0.9);
-}
-
-/* Only show in edit mode */
-.card .controls { display: none; }
-.editing .card .controls { display: flex; }
-
-
-/* Meta text */
-.meta { display: flex; flex-direction: column; gap: 4px; }
-.name { font-weight: 700; line-height: 1.15; }
-.brand { color: var(--muted); font-size: 12px; }
-
-/* Optional small label on cards */
-.tag {
-  align-self: start;
-  border: 1px solid #2d2d2d; color: #dcdcdc;
-  padding: 4px 8px; border-radius: 999px; font-size: 11px;
-  background: #131313;
-}
-
-/* ===== Notes (hover on desktop, tap to toggle on mobile) ===== */
-.notes {
-  margin-top: 6px;
-  font-size: 12px; line-height: 1.45;
-  color: var(--fg);
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--ring);
-  border-radius: 10px;
-  padding: 8px 10px;
-
-  /* collapsed by default */
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-
-  transition: max-height .25s ease, opacity .2s ease, transform .2s ease;
-  transform: translateY(-4px);
-}
-
-/* show notes on hover (desktop) */
-.card:hover .notes {
-  max-height: 220px; /* enough for a few lines */
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* mobile/tap support: JS toggles .open on the .card */
-.card.open .notes {
-  max-height: 240px;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Utilities */
-.hidden { display: none !important; }
