@@ -126,11 +126,11 @@
     "id": "saeed-ghani-sultan"
   },
   {
+    "id": "saeed-ghani-shah-intense",
     "name": "Shah Intense",
     "brand": "Saeed Ghani",
     "img": "static/img/saeed_ghani_shah_intense.webp",
-    "notes": "Top Notes: Cardamom  Middle Notes: Leather and Jasmine Sambac  Base Notes: Amber, Moss and Patchouli",
-    "id": "saeed-ghani-shah-intense"
+    "notes": "Top Notes: Cardamom  Middle Notes: Leather and Jasmine Sambac  Base Notes: Amber, Moss and Patchouli"
   },
   {
     "name": "Haider",
@@ -159,5 +159,40 @@
     "img": "static/img/saeed_ghani_shahi_khus.webp",
     "notes": "Top Notes: Bergamot, Pink Pepper and Iris  Middle Notes: Jasmine, Vetiver and Almond  Base Notes: Sandalwood, Tonka Bean and Patchouli",
     "id": "saeed-ghani-shahi-khus"
+  },
+  {
+    "name": "Fateh",
+    "brand": "MTJ",
+    "img": "static/img/mtj_fateh.webp",
+    "notes": "Top Notes: Grapefruit, Lemon, Mint, Pink Pepper  Heart (Middle) Notes: Nutmeg, Ginger, Jasmine, Iso E Super  Base Notes: Labdanum, Sandalwood, Patchouli, Vetiver, Incense",
+    "id": "mtj-fateh"
+  },
+  {
+    "name": "Oudh Saffron",
+    "brand": "WB Hemani",
+    "img": "static/img/wb_hemani_oudh_saffron.webp",
+    "notes": "Top Note: Labdanum  Heart Note: Rose, Patchouli  Base Note: Oud, Cedarwood  Inspiration: Oud Ispahan by Dior",
+    "id": "wb-hemani-oudh-saffron"
+  },
+  {
+    "name": "Oudh Intense",
+    "brand": "WB Hemani",
+    "img": "static/img/wb_hemani_oudh_intense.webp",
+    "notes": "Top Note: Saffron, Leathery  Heart Note: Rose, Violet  Base Note: Maltol, Patchouli, Dry Amber, Oudwood  Inspiration: Riviere by Thameen",
+    "id": "wb-hemani-oudh-intense"
+  },
+  {
+    "name": "Poetic Whispers",
+    "brand": "WB Hemani",
+    "img": "static/img/wb_hemani_poetic_whispers.jpeg",
+    "notes": "Top – Orange, Lemon, Blackcurrant, Fruity Notes, Green Notes  Heart – Gardenia, Magnolia, Rose  Base – Patchouli, Sandalwood, Amber Notes, Musky Notes",
+    "id": "wb-hemani-poetic-whispers"
+  },
+  {
+    "name": "DEFENDER POUR HOMME",
+    "brand": "J.",
+    "img": "static/img/j._defender_pour_homme.webp",
+    "notes": "Top Notes:Bergamot, Cardamom, Violet Leaves Heart Notes: Cinnamon, Lily of the Valley Base Notes: Leather, Sandalwood, Tonka Beans, Vanilla",
+    "id": "j-defender-pour-homme"
   }
 ]

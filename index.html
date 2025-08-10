@@ -5,40 +5,56 @@
   <title>Perfume Shelf</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="static/styles.css" />
-
 </head>
+
 <body>
-  <header class="header">
-    <h1>My Perfume Shelf</h1>
+  <video class="lights-bg" autoplay muted loop playsinline>
+    <source src="static/lights.mp4" type="video/mp4">
+  </video>
+
+<header class="header">
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <h1 class="hero-title">
+      My Perfume Shelf
+      <span class="accent-line"></span>
+    </h1>
+  </div>
+
+  <div class="header-controls">
+    <div class="menu">
+      <button class="badge menu-btn">Collection ▾</button>
+      <div class="menu-list">
+        <a href="index.html">Collection</a>
+        <a href="wishlist.html">Wishlist</a>
+      </div>
+    </div>
+
     <input id="search" type="search" placeholder="Search perfumes…" autocomplete="off" />
     <label class="badge">
       <input id="editToggle" type="checkbox" style="vertical-align: middle; margin-right:6px;" />
       Edit mode
     </label>
-  </header>
+  </div>
+</header>
 
   <main class="container">
-    <!-- Add/Update form (shown always; harmless if unused) -->
     <form id="addForm" class="panel">
-  <input name="name" placeholder="Name" required />
-  <input name="brand" placeholder="Brand" required />
-  <input name="img" id="imgPath" placeholder="Image path (auto-filled when you upload)" />
-  <input type="file" id="imgFile" accept=".jpg,.jpeg,.png,.webp" />
-  <div class="preview hidden" id="imgPreviewWrap">
-    <img id="imgPreview" alt="Preview">
-  </div>
-  <input name="notes" placeholder="Notes (optional)" />
-  <button type="submit" class="badge">Add / Update</button>
-</form>
-
-
+      <input name="name" placeholder="Name" required />
+      <input name="brand" placeholder="Brand" required />
+      <input name="img" id="imgPath" placeholder="Image path (auto-filled when you upload)" />
+      <input type="file" id="imgFile" accept=".jpg,.jpeg,.png,.webp" />
+      <div class="preview hidden" id="imgPreviewWrap">
+        <img id="imgPreview" alt="Preview">
+      </div>
+      <input name="notes" placeholder="Notes (optional)" />
+      <button type="submit" class="badge">Add / Update</button>
+    </form>
 
     <div id="grid" class="grid"></div>
   </main>
 
-  <!-- was: <script src="static/app.js"></script> -->
-<script src="static/app.js" defer></script>
-<div id="zoomBox" class="zoom"></div>
-
+  <script src="static/app.js" defer></script>
+  <div id="zoomBox" class="zoom"></div>
 </body>
 </html>
