@@ -3,6 +3,7 @@
     "id": "invictus",
     "name": "Invictus",
     "brand": "Paco Rabanne",
+    "price": "65",
     "img": "static/img/invictus.jpg",
     "notes": "Fresh aquatic citrus with ambergris vibe. Great gym/daytime."
   },
@@ -38,6 +39,7 @@
     "id": "janan-platinum",
     "name": "Janan Platinum",
     "brand": "J.",
+    "price": "40",
     "img": "static/img/janan_platinum.webp",
     "notes": "Elegant woody-spicy fragrance with a warm, long-lasting base."
   },

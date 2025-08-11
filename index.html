@@ -6,47 +6,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="static/styles.css" />
 </head>
-
 <body>
-  <video class="lights-bg" autoplay muted loop playsinline>
-    <source src="static/lights.mp4" type="video/mp4">
+  <video class="lights-bg" autoplay muted loop playsinline preload="metadata">
+    <source src="static/lights.mp4" type="video/mp4" />
   </video>
 
-<header class="header">
-  <div class="hero">
-    <div class="hero-glow"></div>
-    <h1 class="hero-title">
-      My Perfume Shelf
-      <span class="accent-line"></span>
-    </h1>
-  </div>
-
-  <div class="header-controls">
-    <div class="menu">
-      <button class="badge menu-btn">Collection ▾</button>
-      <div class="menu-list">
-        <a href="index.html">Collection</a>
-        <a href="wishlist.html">Wishlist</a>
-      </div>
+  <header class="header">
+    <div class="hero">
+      <div class="hero-glow"></div>
+      <h1 class="hero-title">My Perfume Shelf</h1>
+      
     </div>
 
-    <input id="search" type="search" placeholder="Search perfumes…" autocomplete="off" />
-    <label class="badge">
-      <input id="editToggle" type="checkbox" style="vertical-align: middle; margin-right:6px;" />
-      Edit mode
-    </label>
-  </div>
-</header>
+    <div class="header-controls">
+      <div class="menu">
+        <button class="badge menu-btn">Collection ▾</button>
+        <div class="menu-list">
+          <a href="/">Collection</a>
+          <a href="/wishlist">Wishlist</a>
+        </div>
+      </div>
+
+      <input id="search" type="search" placeholder="Search perfumes… (press / to focus)" autocomplete="off" />
+      <label class="badge edit-toggle">
+        <input id="editToggle" type="checkbox" />
+        <span class="switch"><span class="knob"></span></span>
+        <span class="label">Edit mode</span>
+      </label>
+    </div>
+  </header>
 
   <main class="container">
     <form id="addForm" class="panel">
       <input name="name" placeholder="Name" required />
       <input name="brand" placeholder="Brand" required />
+      <input name="price" placeholder="Price (optional)" />
       <input name="img" id="imgPath" placeholder="Image path (auto-filled when you upload)" />
-      <input type="file" id="imgFile" accept=".jpg,.jpeg,.png,.webp" />
-      <div class="preview hidden" id="imgPreviewWrap">
-        <img id="imgPreview" alt="Preview">
-      </div>
+      <input type="file" id="imgFile" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.avif" />
+      <div class="preview hidden" id="imgPreviewWrap"><img id="imgPreview" alt="Preview" /></div>
       <input name="notes" placeholder="Notes (optional)" />
       <button type="submit" class="badge">Add / Update</button>
     </form>
@@ -54,7 +51,7 @@
     <div id="grid" class="grid"></div>
   </main>
 
-  <script src="static/app.js" defer></script>
+  <script src="static/app.js?v=10" defer></script>
   <div id="zoomBox" class="zoom"></div>
 </body>
 </html>
