@@ -196,5 +196,13 @@
     "img": "static/img/j._defender_pour_homme.webp",
     "notes": "Top Notes:Bergamot, Cardamom, Violet Leaves Heart Notes: Cinnamon, Lily of the Valley Base Notes: Leather, Sandalwood, Tonka Beans, Vanilla",
     "id": "j-defender-pour-homme"
+  },
+  {
+    "id": "jean-paul-gaultier-le-male-elixir",
+    "name": "Le Male Elixir",
+    "brand": "Jean Paul Gaultier",
+    "price": "90",
+    "img": "static/img/jean_paul_gaultier_le_male_elixir.webp",
+    "notes": "Top notes are Lavender and Mint; middle notes are Vanilla and Benzoin; base notes are Honey, Tonka Bean and Tobacco."
   }
 ]

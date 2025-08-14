@@ -1,57 +1,186 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html> <!-- This tells the browser to use modern HTML5 parsing (HTML5 doctype). It avoids quirks mode. -->
+<html lang="en"> <!-- Root HTML element. lang="en" helps screen readers, translators, and search engines. -->
+<head> <!-- The <head> contains metadata, links to CSS/JS, and things not directly shown on the page. -->
+
   <meta charset="UTF-8" />
+  <!-- Character encoding: UTF-8 can represent almost every character/symbol in all languages. Safe default. -->
+
   <title>Perfume Shelf</title>
+  <!-- The text that appears in the browser tab and bookmarks. Keep it short and descriptive. -->
+
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="static/styles.css" />
+  <!-- Makes the layout responsive on mobile:
+       - width=device-width: viewport matches device width (no zoom-out).
+       - initial-scale=1: start at 100% zoom. -->
+
+  <link rel="stylesheet" href="static/styles.css?v=9991" />
+  <!-- Link to your stylesheet. The ?v=9991 "cache buster" forces the browser to fetch a fresh copy when you change it.
+       Increase this number when you edit CSS so users don’t see old cached styles. -->
+
 </head>
-<body>
+
+<body> <!-- Everything visible to the user goes inside <body>. -->
+
+  <!-- =========================
+       FULL-SCREEN VIDEO BACKGROUND
+       ========================= -->
   <video class="lights-bg" autoplay muted loop playsinline preload="metadata">
+    <!-- class="lights-bg" is styled in CSS to be full-screen and behind all content (z-index negative).
+         autoplay: start playing immediately (muted is required by browsers for autoplay).
+         muted: no audio (important for autoplay to be allowed).
+         loop: when the video ends, start again.
+         playsinline: prevents iOS Safari from forcing full-screen video playback.
+         preload="metadata": only preloads metadata (duration, dimensions) to save bandwidth. -->
+
     <source src="static/lights.mp4" type="video/mp4" />
+    <!-- <source> tells the browser where the video file is and what format/codec it is (mp4 here).
+         If you had multiple formats (e.g., webm), you could add another <source> so browsers pick what they support. -->
   </video>
 
-  <header class="header">
-    <div class="hero">
-      <div class="hero-glow"></div>
-      <h1 class="hero-title">My Perfume Shelf</h1>
-      
-    </div>
+  <!-- =========================
+       HEADER: BRAND • NAV • ACTIONS
+       ========================= -->
+  <header class="site-header">
+    <!-- .site-header is your transparent, sticky header. CSS adds a thin separator line at the bottom. -->
 
-    <div class="header-controls">
-      <div class="menu">
-        <button class="badge menu-btn">Collection ▾</button>
-        <div class="menu-list">
-          <a href="/">Collection</a>
-          <a href="/wishlist">Wishlist</a>
-        </div>
+    <div class="site-header-inner">
+      <!-- This is a 3-column grid (left/center/right) that aligns:
+           - Brand at left
+           - Navigation in the center
+           - Search + Edit toggle at right
+           The grid and spacing are defined in styles.css. -->
+
+      <!-- LEFT: Brand / Home link -->
+      <a href="/" class="brand">
+        <!-- Clicking this takes you to "/" (Collection page). Using <a> instead of <div> makes it keyboard focusable. -->
+        <span class="brand-word">My</span>
+        <span class="brand-word strong">Perfume</span>
+        <span class="brand-word">Shelf</span>
+        <!-- The middle word has a tiny accent underline via CSS (.brand-word.strong::after) for style. -->
+      </a>
+
+      <!-- CENTER: Primary navigation -->
+      <nav class="global-nav">
+        <!-- The nav uses a simple <ul><li><a> structure so screen readers treat it as a list of links. -->
+        <ul>
+          <li><a href="/" data-link="collection">Collection</a></li>
+          <!-- data-link="collection" is a tiny “mode tag” used by the script at the bottom to highlight the active tab. -->
+
+          <li><a href="/wishlist" data-link="wishlist">Wishlist</a></li>
+          <!-- data-link="wishlist" is the other mode. The active one gets an underline glow via .active::after in CSS. -->
+        </ul>
+      </nav>
+
+      <!-- RIGHT: Actions (search + edit toggle) -->
+      <div class="header-actions">
+        <!-- SEARCH: JS listens to #search input events and filters cards live. -->
+        <input id="search" type="search"
+               placeholder="Search perfumes… (press / to focus)" autocomplete="off" />
+        <!-- id="search": lets JS find it easily.
+             type="search": mobile devices show a search-friendly keyboard.
+             placeholder: hint text shown when empty.
+             autocomplete="off": prevent the browser’s history dropdown from overlaying your UI. -->
+
+        <!-- EDIT MODE TOGGLE: When enabled, the card edit/delete buttons become visible (pure CSS + JS). -->
+        <label class="badge edit-toggle">
+          <!-- Wrapping input in a <label> makes the whole pill clickable, not just the tiny checkbox. -->
+          <input id="editToggle" type="checkbox" />
+          <!-- This is the real checkbox (hidden visually by CSS).
+               JS reads .checked to add/remove .editing on <body> which reveals card controls. -->
+
+          <span class="switch"><span class="knob"></span></span>
+          <!-- This pair draws the visual toggle:
+               - .switch is the track
+               - .knob is the little circle that slides left/right when checked -->
+
+          <span class="label">Edit mode</span>
+          <!-- Visible text explaining what the switch does. Good for accessibility and clarity. -->
+        </label>
       </div>
-
-      <input id="search" type="search" placeholder="Search perfumes… (press / to focus)" autocomplete="off" />
-      <label class="badge edit-toggle">
-        <input id="editToggle" type="checkbox" />
-        <span class="switch"><span class="knob"></span></span>
-        <span class="label">Edit mode</span>
-      </label>
     </div>
   </header>
 
+  <!-- =========================
+       MAIN CONTENT
+       ========================= -->
   <main class="container">
+    <!-- .container keeps content centered with a max width and padding. -->
+
+    <!-- ADD / UPDATE FORM -->
     <form id="addForm" class="panel">
-      <input name="name" placeholder="Name" required />
+      <!-- The form is reused for both "create new" and "edit existing" (JS fills it when you click "Edit"). -->
+
+      <!-- Required fields -->
+      <input name="name"  placeholder="Name"  required />
       <input name="brand" placeholder="Brand" required />
+      <!-- 'required' makes the browser enforce that these are filled in before submit. -->
+
+      <!-- Optional fields -->
       <input name="price" placeholder="Price (optional)" />
+      <!-- Price is treated as a string by the UI; server stores it as provided (empty becomes null in app.js). -->
+
       <input name="img" id="imgPath" placeholder="Image path (auto-filled when you upload)" />
-      <input type="file" id="imgFile" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.avif" />
-      <div class="preview hidden" id="imgPreviewWrap"><img id="imgPreview" alt="Preview" /></div>
+      <!-- This can be typed manually OR auto-filled after you upload a file. -->
+
+      <!-- File upload (optional). Server converts to .webp when possible and returns a path. -->
+      <input type="file" id="imgFile"
+             accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.avif" />
+      <!-- accept= limits file picker to supported formats. Not a security feature, just a UX hint. -->
+
+      <!-- Preview shows after you pick a file; it starts hidden via .hidden class -->
+      <div class="preview hidden" id="imgPreviewWrap">
+        <img id="imgPreview" alt="Preview" />
+        <!-- JS sets the src to a temporary blob URL so you can see what you picked before uploading. -->
+      </div>
+
       <input name="notes" placeholder="Notes (optional)" />
+      <!-- Freeform notes. In cards, this section is collapsed by default and expands on hover or .open toggle. -->
+
+      <!-- Submit button (same button is used for both Add and Update) -->
       <button type="submit" class="badge">Add / Update</button>
+      <!-- JS decides whether it’s creating or updating by checking if editingId is set. -->
     </form>
 
+    <!-- GRID: JS injects card HTML here (via render(perfumes)). -->
     <div id="grid" class="grid"></div>
   </main>
 
+  <!-- =========================
+       SCRIPTS (FUNCTIONALITY)
+       ========================= -->
+
   <script src="static/app.js?v=10" defer></script>
+  <!-- Loads your main JavaScript:
+       - defer: waits until HTML parsing finishes, then executes (order preserved between deferred scripts).
+       - ?v=10: cache buster so you can force-load new JS after changes. -->
+
+  <!-- Hover zoom box (empty div). JS sets its background-image and position on thumbnail hover. -->
   <div id="zoomBox" class="zoom"></div>
+
+  <!-- Tiny helper script:
+       - Detects current page mode (collection vs wishlist)
+       - Adds .active to the corresponding nav link so it gets the underline glow
+       - This script runs immediately (IIFE) after being parsed. -->
+  <script>
+    (function(){
+      const mode = (window.PAGE_MODE === "wishlist") ? "wishlist" : "collection";
+      // window.PAGE_MODE is only set on wishlist.html. If undefined (on index.html), we default to "collection".
+
+      document.querySelectorAll('a[href="/"], a[href="/wishlist"]').forEach(a=>{
+        // Grab both nav links. For each one, decide if it should be highlighted based on mode.
+
+        const isCollection = a.getAttribute('href') === '/';
+        const isWishlist   = a.getAttribute('href') === '/wishlist';
+
+        // Toggle the "active" class if it matches the current mode. CSS draws the glow underline for .active.
+        a.classList.toggle(
+          'active',
+          (mode === 'collection' && isCollection) ||
+          (mode === 'wishlist'   && isWishlist)
+        );
+      });
+    })();
+  </script>
+
 </body>
 </html>
