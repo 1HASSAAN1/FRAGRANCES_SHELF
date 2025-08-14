@@ -2,57 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Wishlist • Perfume Shelf</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="static/styles.css" />
-  <script>window.PAGE_MODE = "wishlist";</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfume Shelf</title>
+  <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
-<body>
-  <video class="lights-bg" autoplay muted loop playsinline preload="metadata">
-    <source src="static/lights.mp4" type="video/mp4" />
+<body data-mode="wishlist">
+  <video class="lights-bg" autoplay muted loop playsinline>
+    <source src="/static/video/bg.mp4" type="video/mp4">
   </video>
 
-  <header class="header">
-    <div class="hero">
-      <div class="hero-glow"></div>
-      <h1 class="hero-title">Wishlist</h1>
-      
-    </div>
-
-    <div class="header-controls">
-      <div class="menu">
-        <button class="badge menu-btn">Wishlist ▾</button>
-        <div class="menu-list">
-          <a href="/">Collection</a>
-          <a href="/wishlist">Wishlist</a>
-        </div>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="/" class="brand">
+        <span class="brand-word">My</span> <span class="brand-word strong">Perfume</span> Shelf
+      </a>
+      <nav class="global-nav">
+        <ul>
+          <li><a href="/collection" data-link="collection">Collection</a></li>
+          <li><a href="/wishlist" data-link="wishlist">Wishlist</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <input id="search" type="text" placeholder="Search… (press / to focus)">
+        <label class="badge edit-toggle">
+          <input type="checkbox" id="editToggle">
+          <span class="switch"><span class="knob"></span></span>
+          <span class="label">Edit Mode</span>
+        </label>
       </div>
-
-      <input id="search" type="search" placeholder="Search wishlist… (press / to focus)" autocomplete="off" />
-      <label class="badge edit-toggle">
-        <input id="editToggle" type="checkbox" />
-        <span class="switch"><span class="knob"></span></span>
-        <span class="label">Edit mode</span>
-      </label>
     </div>
   </header>
 
   <main class="container">
+    <section class="panel">
+      <div id="grid" class="grid"></div>
+    </section>
     <form id="addForm" class="panel">
-      <input name="name" placeholder="Name" required />
-      <input name="brand" placeholder="Brand" required />
-      <input name="price" placeholder="Price (optional)" />
-      <input name="img" id="imgPath" placeholder="Image path (auto-filled when you upload)" />
-      <input type="file" id="imgFile" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.avif" />
-      <div class="preview hidden" id="imgPreviewWrap"><img id="imgPreview" alt="Preview" /></div>
-      <input name="notes" placeholder="Notes (optional)" />
-      <button type="submit" class="badge">Add / Update</button>
+      <input type="hidden" id="imgPath" name="img" />
+      <div>
+        <label>Name</label>
+        <input type="text" name="name" required />
+      </div>
+      <div>
+        <label>Brand</label>
+        <input type="text" name="brand" required />
+      </div>
+      <div>
+        <label>Price</label>
+        <input type="text" name="price" />
+      </div>
+      <div>
+        <label>Notes</label>
+        <textarea name="notes"></textarea>
+      </div>
+      <div>
+        <label>Image</label>
+        <input type="file" id="imgFile" accept="image/*" />
+      </div>
+      <div id="imgPreviewWrap" class="preview hidden">
+        <img id="imgPreview" alt="Preview">
+      </div>
+      <button type="submit">Save</button>
     </form>
-
-    <div id="grid" class="grid"></div>
   </main>
 
-  <script src="static/app.js?v=10" defer></script>
   <div id="zoomBox" class="zoom"></div>
+  <script>
+    window.PAGE_MODE = "wishlist";
+  </script>
+  <script src="/static/js/app.js"></script>
 </body>
 </html>

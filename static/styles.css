@@ -1,253 +1,339 @@
-/* ===== Theme ===== */
+/* ========================================================================== */
+/*  PERFUME SHELF — CLEANED, DEDUPED, SUPER-COMMENTED CSS                     */
+/*  - Duplicates removed (topnav/site-header/emergency overrides were repeated)
+    - Old .header (glass box) kept for compatibility but visually disabled
+    - New .site-header + .global-nav are the primary header styles
+    - Cards/grid/form styles preserved exactly
+    - Comments are beginner-friendly so future-you knows why things exist
+/* ========================================================================== */
+
+
+/* ========== 1) THEME TOKENS (custom properties you can reuse anywhere) ==== */
 :root {
-  --bg: radial-gradient(120% 120% at 50% -10%, #111 0%, #0a0a0a 40%, #070707 100%);
-  --surface: #101010; --card: #141414; --fg: #f6f6f6; --muted: #a9a9a9;
-  --ring: #2b2b2b; --ring-strong: #3a3a3a; --accent: #7bd8ff; --danger: #ff6b6b;
+  --bg: radial-gradient(120% 120% at 50% -10%, #111 0%, #0a0a0a 40%, #070707 100%); /* Background gradient used behind video fallback */
+  --surface: #101010;      /* Generic surface color (panels, etc.) */
+  --card: #141414;         /* Card background */
+  --fg: #f6f6f6;           /* Main text color (foreground) */
+  --muted: #a9a9a9;        /* Secondary text */
+  --ring: #2b2b2b;         /* Subtle border */
+  --ring-strong: #3a3a3a;  /* Stronger border when focused/hovered */
+  --accent: #7bd8ff;       /* Blue accent (lines, glows, chips) */
+  --danger: #ff6b6b;       /* Red for destructive actions */
 }
 
-* { box-sizing: border-box; }
+
+/* ================= 2) BASE / RESET (predictable defaults) ================= */
+* { box-sizing: border-box; }                         /* Include padding/border inside width/height */
 html, body {
-  margin: 0;
-  padding: 0;
-  color: var(--fg);
-  background: #0a0a0a;
-  font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+  margin: 0;                                          /* Remove default browser margins */
+  padding: 0;                                         /* Remove default browser padding */
+  color: var(--fg);                                   /* Default text color */
+  background: #0a0a0a;                                /* Dark fallback (video sits on top) */
+  font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif; /* Nice cross-platform stack */
 }
-body { background: transparent; }
+body { background: transparent; }                     /* Let the video shine through */
 
-/* Lights video bg */
+
+/* ================= 3) FULLSCREEN BACKGROUND VIDEO ======================== */
 .lights-bg {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -2;
-  filter: brightness(.5) saturate(1.05) blur(1.5px);
+  position: fixed; inset: 0;                          /* Pin to viewport edges */
+  width: 100%; height: 100%;                          /* Cover window */
+  object-fit: cover;                                  /* Crop to fill without distortion */
+  z-index: -2;                                        /* Sit behind everything */
+  filter: brightness(.5) saturate(1.05) blur(1.5px);  /* Moodier, slightly softer video */
 }
 
-/* Hero */
-.hero { position: relative; padding: 36px 20px 10px; text-align: center; }
+
+/* ================= 4) HERO (big title + glow) ============================ */
+.hero {
+  position: relative;
+  padding: 36px 20px 10px;                            /* Space above title; little below to hug header */
+  text-align: center;
+}
 .hero-glow {
-  position: absolute;
-  inset: -60px 0 auto;
-  height: 120px;
-  pointer-events: none;
-  background: radial-gradient(60% 60% at 50% 50%, rgba(123,216,255,.28), rgba(255,255,255,.08) 40%, transparent 70%);
-  filter: blur(20px);
+  position: absolute; inset: -60px 0 auto;
+  height: 120px; pointer-events: none;
+  background: radial-gradient(60% 60% at 50% 50%,
+               rgba(123,216,255,.28),
+               rgba(255,255,255,.08) 40%,
+               transparent 70%);
+  filter: blur(20px);                                 /* Soft halo behind the title */
 }
 .hero-title {
   position: relative;
-  font-size: clamp(26px,4vw,44px);
-  font-weight: 800;
-  margin: 0;
+  font-size: clamp(26px,4vw,44px);                    /* Responsive: 26–44px */
+  font-weight: 800; margin: 0;                        /* Big, bold, no margins */
 }
-/* Removed accent-line entirely on all pages */
+/* If any .accent-line exists in markup, we nuke it (design choice) */
 .accent-line { display: none !important; }
 
-/* Header (glass) */
+
+/* ================= 5) OLD “GLASS BOX” HEADER (disabled visually) =========
+   We keep these rules so old markup won't explode, but we make it transparent.
+   Your *new* header is .site-header (below).
+======================================================================== */
 .header {
   position: sticky; top: 0; z-index: 20;
   margin: 12px auto; max-width: 1200px;
-  background: rgba(20,20,20,.5);
-  backdrop-filter: blur(18px) saturate(170%);
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 18px;
-  box-shadow: 0 6px 22px rgba(0,0,0,.35);
+  background: transparent !important;                 /* Turn off old glass background */
+  border: 0 !important; box-shadow: none !important;  /* Remove old chrome */
 }
-.header.scrolled { box-shadow: 0 4px 14px rgba(0,0,0,.5), 0 0 12px rgba(123,216,255,.15); }
+.header.scrolled { box-shadow: none !important; }      /* Kill old scrolled shadow */
+.header-controls { display: none !important; }         /* Hide old controls block */
 
-/* Controls */
-.header-controls {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 16px 20px;
+
+/* ================= 6) NEW ELEMENTIS-STYLE HEADER =========================
+   Layout: brand (left) • centered nav (middle) • actions (right)
+======================================================================== */
+.site-header {
+  position: sticky; top: 0; z-index: 30;              /* Stay pinned on scroll */
+  background: transparent;                             /* Video visible beneath */
+  padding: 22px 0 10px;                                /* Airy space above, thin below */
 }
-.header-controls .menu { justify-self: center; position: relative; }
-.header-controls #search { grid-column: 1/4; justify-self: center; width: min(820px,92%); }
-.header-controls .edit-toggle { justify-self: center; }
-
-/* Menu */
-.menu-btn { cursor: pointer; }
-.menu-list {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(20,20,20,.9);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 12px;
-  box-shadow: 0 10px 24px rgba(0,0,0,.45);
-  padding: 6px;
-  display: none;
-  min-width: 180px;
-  backdrop-filter: blur(12px);
-  z-index: 10;
+.site-header::after {
+  /* Thin hairline separator at bottom of header */
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: rgba(255,255,255,.08);
 }
-.menu.open .menu-list { display: block; }
-.menu-list a {
-  display: block;
-  padding: 10px 12px;
-  border-radius: 10px;
-  color: #eaeaea;
-  text-decoration: none;
-  font-size: 14px;
+.site-header-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 24px; /* Centered page frame */
+  display: grid; gap: 16px; align-items: center;
+  grid-template-columns: 1fr auto 1fr;                 /* Left / Center / Right */
 }
-.menu-list a:hover { background: rgba(255,255,255,.06); }
 
-/* Search */
-#search {
-  background: #0e0e0e;
-  border: 1px solid var(--ring);
-  padding: 13px 14px;
-  border-radius: 14px;
-  outline: none;
-  color: var(--fg);
-  font-size: 15px;
+/* Brand (clickable, sends you home) */
+.brand {
+  display: inline-flex; gap: 6px; align-items: baseline;
+  text-decoration: none; color: #f3f3f3;
+  font-size: clamp(22px, 2.8vw, 32px); font-weight: 700; letter-spacing: .02em;
 }
-#search:focus { border-color: var(--ring-strong); box-shadow: 0 0 0 3px rgba(123,216,255,.12); }
+.brand-word.strong { font-weight: 800; position: relative; }
+.brand-word.strong::after {
+  /* Small accent underline under the strong word (Perfume) */
+  content: ""; position: absolute; left: 2px; right: 2px; bottom: 2px; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(123,216,255,.85), transparent);
+  border-radius: 2px;
+}
 
-/* Layout */
-.container { max-width: 1180px; margin: 22px auto; padding: 0 20px 48px; }
+/* Centered primary navigation */
+.global-nav ul {
+  display: flex; justify-content: center; align-items: center;
+  gap: clamp(18px, 3vw, 48px);                         /* Responsive spacing between links */
+  list-style: none; margin: 0; padding: 0;             /* No bullets */
+}
+.global-nav a {
+  text-decoration: none; color: #eaeaea;               /* Force away purple/blue defaults */
+  opacity: .86; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; font-size: clamp(12px, 1.2vw, 14px);
+  position: relative; transition: opacity .15s, transform .15s;
+}
+.global-nav a:hover { opacity: 1; transform: translateY(-1px); }
+.global-nav a.active::after {
+  /* Glow underline to show which page is active */
+  content: ""; position: absolute; left: 0; right: 0; bottom: -8px; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(123,216,255,.9), transparent);
+  border-radius: 2px;
+}
 
-/* Panel */
+/* Right-side actions (search field + edit toggle) */
+.header-actions {
+  display: flex; justify-content: flex-end; align-items: center; gap: 12px;
+}
+.header-actions #search {
+  width: min(420px, 36vw);                             /* Not too wide, responsive */
+  background: rgba(0,0,0,.45);                         /* Subtle glass */
+  border: 1px solid rgba(255,255,255,.14);
+  padding: 12px 14px; border-radius: 999px;            /* Pill shape */
+  color: var(--fg); font-size: 14px; outline: none;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+}
+.header-actions #search:focus {
+  border-color: rgba(123,216,255,.55); background: rgba(0,0,0,.6);
+  box-shadow: 0 0 0 3px rgba(123,216,255,.12);         /* Soft focus glow */
+}
+/* Ensure header links never flip purple after visit */
+.site-header a, .site-header a:visited { color: #eaeaea; }
+
+/* Optional premium touch: blur on scroll (enable via JS toggling .scrolled) */
+.site-header.scrolled { backdrop-filter: blur(10px) saturate(140%); }
+
+
+/* ================= 7) MAIN LAYOUT CONTAINERS ============================ */
+.container {
+  max-width: 1180px;                                   /* Content width cap */
+  margin: 22px auto;                                   /* Centered with top/bottom spacing */
+  padding: 0 20px 48px;                                /* Side padding; extra bottom */
+}
 .panel {
-  background: rgba(20,20,20,.55);
+  background: rgba(20,20,20,.55);                      /* Glassy panel */
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255,255,255,.08);
-  border-radius: 20px;
-  padding: 18px;
+  border-radius: 20px; padding: 18px; margin-bottom: 28px;
   box-shadow: 0 8px 28px rgba(0,0,0,.4);
-  margin-bottom: 28px;
-  animation: fadeSlideUp .5s ease forwards;
+  animation: fadeSlideUp .5s ease forwards;            /* Smooth entrance */
 }
 
-/* ===== Grid / Cards ===== */
+
+/* ================= 8) GRID + CARD UI ==================================== */
 .grid {
-  display: grid;
-  gap: 18px;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  display: grid; gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Responsive columns */
 }
-
 .card {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--ring);
+  position: relative; overflow: hidden;
+  border: 1px solid var(--ring); border-radius: 18px;
   background: linear-gradient(180deg,#171717,#121212);
-  border-radius: 18px;
-  padding: 14px;
-  padding-bottom: 48px; /* space for price chip */
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  padding: 14px 14px 48px;                              /* Bottom space for price chip */
+  display: flex; flex-direction: column; gap: 10px;
+  transition: transform .18s, box-shadow .18s, border-color .18s;
   box-shadow: 0 10px 30px rgba(0,0,0,.25);
 }
 .card:hover {
-  transform: translateY(-3px);
-  border-color: var(--ring-strong);
+  transform: translateY(-3px); border-color: var(--ring-strong);
   box-shadow: 0 16px 38px rgba(0,0,0,.35);
 }
 
+/* Thumbnail area maintains 3:4 shape even while image loads */
 .thumb-wrap {
-  position: relative;
-  border-radius: 14px;
-  overflow: hidden;
+  position: relative; border-radius: 14px; overflow: hidden;
   border: 1px solid #1b1b1b;
   background: radial-gradient(120% 120% at 50% 10%, #1a1a1a 0%, #0e0e0e 70%);
-  aspect-ratio: 3/4;
+  aspect-ratio: 3 / 4;
 }
 .thumb {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+  width: 100%; height: 100%; object-fit: cover; object-position: center;
   transition: transform .35s ease, filter .35s ease;
 }
 .card:hover .thumb { transform: scale(1.06); filter: saturate(1.06) contrast(1.04); }
 
-.meta {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.name { font-weight: 800; letter-spacing: .2px; }
-.brand { font-size: 12px; color: var(--muted); }
+/* Text stack under the image */
+.meta { display: flex; flex-direction: column; gap: 4px; }
+.name { font-weight: 800; letter-spacing: .2px; }       /* Bold product name */
+.brand { font-size: 12px; color: var(--muted); }         /* Muted brand */
 
-/* Notes */
+/* Notes (collapsible on hover or when .open is toggled by JS) */
 .notes {
-  margin-top: 6px;
-  font-size: 12px;
-  line-height: 1.45;
-  color: #f1f1f1;
-  background: rgba(255,255,255,.04);
-  border: 1px solid var(--ring);
-  border-radius: 10px;
-  padding: 8px 10px;
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
+  margin-top: 6px; font-size: 12px; line-height: 1.45; color: #f1f1f1;
+  background: rgba(255,255,255,.04); border: 1px solid var(--ring);
+  border-radius: 10px; padding: 8px 10px;
+  max-height: 0; opacity: 0; overflow: hidden; transform: translateY(-4px);
   transition: max-height .25s ease, opacity .18s ease, transform .18s ease;
-  transform: translateY(-4px);
 }
-.card:hover .notes, .card.open .notes { max-height: 240px; opacity: 1; transform: translateY(0); }
+.card:hover .notes,
+.card.open .notes { max-height: 240px; opacity: 1; transform: translateY(0); }
 
-/* Floating controls */
+/* Floating Edit/Delete controls (only visible when body.has .editing) */
 .controls {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: none;
-  gap: 8px;
-  z-index: 5;
+  position: absolute; top: 10px; right: 10px; z-index: 5;
+  display: none; gap: 8px;
 }
 .editing .controls { display: flex; }
 .icon-btn {
   width: 36px; height: 36px; display: grid; place-items: center;
   border-radius: 999px; border: 1px solid var(--ring);
-  background: rgba(0,0,0,.55);
-  cursor: pointer; backdrop-filter: blur(3px);
+  background: rgba(0,0,0,.55); backdrop-filter: blur(3px); cursor: pointer;
 }
 .icon-btn svg { width: 18px; height: 18px; fill: #eaeaea; }
 .icon-btn:hover { border-color: var(--ring-strong); }
 .icon-btn.delete { background: rgba(150,0,0,.75); }
 .icon-btn.delete:hover { background: rgba(180,0,0,.85); }
 
-/* PRICE chip — bottom-right, bold */
+/* Price chip (bottom-right of card) */
 .price {
-  position: absolute;
-  bottom: 12px;
-  right: 14px;
-  left: auto; /* override if inherited */
-  font-weight: 700;
-  font-size: 14px;
-  color: var(--accent);
-  background: rgba(123, 216, 255, 0.12);
-  padding: 4px 8px;
-  border-radius: 8px;
-  white-space: nowrap;
-  line-height: 1;
+  position: absolute; bottom: 12px; right: 14px;
+  font-weight: 700; font-size: 14px; line-height: 1; white-space: nowrap;
+  color: var(--accent); background: rgba(123,216,255, .12);
+  padding: 4px 8px; border-radius: 8px;
 }
 
-/* Card hover glow */
+/* Fancy card hover glow overlay */
 .card::after {
-  content: "";
-  position: absolute; inset: -1px; border-radius: 18px; pointer-events: none;
+  content: ""; position: absolute; inset: -1px; border-radius: 18px; pointer-events: none;
   background: radial-gradient(60% 60% at 50% 10%, rgba(123,216,255,.20), transparent 60%);
   opacity: 0; transition: opacity .25s ease;
 }
 .card:hover::after { opacity: .9; }
 
-/* Animations */
+
+/* ================= 9) FORM GOODIES (badges, toggle, preview) ============ */
+/* Reusable pill buttons (menu/look-like, submit, etc.) */
+.badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 12px; font-size: 14px; user-select: none; cursor: pointer;
+  color: #eaeaea; background: rgba(0,0,0,.55);
+  border: 1px solid var(--ring); border-radius: 999px;
+}
+.badge:hover { border-color: var(--ring-strong); }
+
+/* Edit-mode toggle (checkbox visually hidden, styled switch shown) */
+.edit-toggle { display: inline-flex; align-items: center; gap: 10px; }
+.edit-toggle input { position: absolute; opacity: 0; pointer-events: none; }
+.switch {
+  position: relative; width: 44px; height: 24px; border-radius: 999px;
+  background: #222; border: 1px solid var(--ring);
+  transition: background .2s, border-color .2s;
+}
+.knob {
+  position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
+  border-radius: 50%; background: #ccc; transition: transform .2s, background .2s;
+}
+.edit-toggle input:checked + .switch { background: rgba(123,216,255,.25); border-color: var(--ring-strong); }
+.edit-toggle input:checked + .switch .knob { transform: translateX(20px); background: var(--accent); }
+.edit-toggle .label { font-size: 14px; color: var(--fg); }
+
+/* Image preview after file pick */
+.preview {
+  margin-top: 10px; max-width: 280px;
+  border: 1px solid var(--ring); border-radius: 12px;
+  padding: 8px; background: rgba(255,255,255,.03);
+}
+.preview img { max-width: 100%; display: block; border-radius: 8px; }
+
+
+/* ================= 10) HOVER ZOOM POPUP (floating magnifier) ============ */
+.zoom {
+  position: fixed; z-index: 1000;                       /* Above everything */
+  width: 280px; height: 360px;                           /* Must match app.js constants */
+  background-size: 200% 200%; background-position: 50% 50%; background-repeat: no-repeat;
+  border: 1px solid var(--ring); border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.5);
+  pointer-events: none; transform: translateZ(0);         /* Smoother movement */
+  opacity: 0; transition: opacity .15s ease;              /* Fade in/out quickly */
+}
+.zoom.visible { opacity: 1; }
+
+
+/* ================= 11) TOPNAV (fallback hooks if you still use .topnav) == */
+/* These styles make your older <nav class="topnav"> version look clean too. */
+.topnav {
+  display: grid; grid-template-columns: 1fr auto; align-items: center;
+  column-gap: 16px; padding: 10px 18px 20px;
+}
+.topnav-left {
+  display: flex; align-items: center; gap: clamp(14px, 2.5vw, 28px);
+  list-style: none; margin: 0; padding: 0;
+}
+.topnav-left a {
+  text-decoration: none; color: #e9e9e9; font-weight: 600; letter-spacing: .2px;
+  opacity: .85; transition: opacity .15s, transform .15s;
+}
+.topnav-left a:hover { opacity: 1; transform: translateY(-1px); }
+.topnav-left a.active { opacity: 1; position: relative; }
+.topnav-left a.active::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(123,216,255,.8), transparent);
+  border-radius: 2px;
+}
+.topnav-right { display: flex; align-items: center; gap: 12px; }
+.topnav-right #search { width: min(420px, 38vw); }       /* Nice width inside header */
+
+
+/* ================= 12) ANIMATIONS & UTILITIES =========================== */
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes cardIn {
   from { opacity: 0; transform: translateY(14px) scale(.96); filter: blur(2px); }
-  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
-/* utility */
-.hidden { display: none !important; }
+.hidden { display: none !important; }                     /* Force-hide utility */
