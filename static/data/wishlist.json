@@ -14,5 +14,13 @@
     "price": "150",
     "img": "static/img/xerjoff_xj_1861_naxos.webp",
     "notes": "Top notes are Lavender, Bergamot and Lemon; middle notes are Honey, Cinnamon, Cashmeran and Jasmine Sambac; base notes are Tobacco Leaf, Vanilla and Tonka Bean."
+  },
+  {
+    "id": "xerjoff-alexandria-ii",
+    "name": "Alexandria II",
+    "brand": "Xerjoff",
+    "price": "310",
+    "img": "/static/img/xerjoff_alexandria_ii.webp",
+    "notes": "Top notes are Palisander Rosewood, Lavender, Cinnamon and Apple; middle notes are Rose, Cedar and Lily-of-the-Valley; base notes are Agarwood (Oud), Sandalwood, Amber, Vanilla and Musk."
   }
 ]

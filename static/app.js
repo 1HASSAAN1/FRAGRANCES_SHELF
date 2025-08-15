@@ -1,12 +1,6 @@
-// ==============================
-// Perfume Collection / Wishlist
-// ==============================
-
+// static/app.js (v11) — root-absolute fix + path normalizer
 console.log("[PAGE_MODE]", window.PAGE_MODE);
-console.log(
-  "[API_BASE]",
-  window.PAGE_MODE === "wishlist" ? "/api/wishlist" : "/api/perfumes"
-);
+console.log("[API_BASE]", window.PAGE_MODE === "wishlist" ? "/api/wishlist" : "/api/perfumes");
 
 // ========= DOM refs =========
 const grid = document.getElementById("grid");
@@ -23,9 +17,25 @@ const zoomBox = document.getElementById("zoomBox");
 const MODE = window.PAGE_MODE === "wishlist" ? "wishlist" : "collection";
 const API_BASE = MODE === "wishlist" ? "/api/wishlist" : "/api/perfumes";
 
-// Reflect mode in header button text if present
+// Optional: reflect mode in any menu button
 const menuBtn = document.querySelector(".menu-btn");
 if (menuBtn) menuBtn.textContent = MODE === "wishlist" ? "Wishlist ▾" : "Collection ▾";
+
+// ========= Helpers =========
+function escapeHTML(s = "") {
+  s = String(s ?? "");
+  return s.replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+}
+function escapeAttr(s = "") {
+  return String(s).replace(/"/g, "&quot;").replace(/</g, "&lt;");
+}
+// Force any "static/..." to root-absolute "/static/..."
+function toRootAbsolute(p) {
+  if (!p) return p;
+  const trimmed = String(p).trim();
+  if (!trimmed) return trimmed;
+  return trimmed.startsWith("/") ? trimmed : "/" + trimmed.replace(/^\/+/, "");
+}
 
 // ========= Image preview =========
 imgFile?.addEventListener("change", () => {
@@ -44,7 +54,7 @@ imgFile?.addEventListener("change", () => {
 let perfumes = [];
 let editingId = null;
 
-// ========= Load =========
+// ========= Load data =========
 async function loadData() {
   try {
     const res = await fetch(API_BASE, { cache: "no-store" });
@@ -60,12 +70,12 @@ loadData();
 // ========= Templates / render =========
 function cardTemplate(p, i) {
   const hasImg = !!p.img;
+  const imgSrc = hasImg ? toRootAbsolute(p.img) : null;
   const imgPart = hasImg
     ? `
       <div class="thumb-wrap">
-        <img class="thumb" src="${escapeAttr(p.img)}" alt="${escapeAttr(
-        (p.name || "Perfume") + ' bottle'
-      )}" loading="lazy" decoding="async" />
+        <img class="thumb" src="${escapeAttr(imgSrc)}" alt="${escapeAttr((p.name || "Perfume") + ' bottle')}" loading="lazy" decoding="async"
+             onerror="this.onerror=null;this.src='/static/img/placeholder.webp'"/>
       </div>
     `
     : `
@@ -74,10 +84,7 @@ function cardTemplate(p, i) {
       </div>
     `;
 
-  const notes = p.notes
-    ? `<div class="notes">${escapeHTML(p.notes)}</div>`
-    : "";
-
+  const notes = p.notes ? `<div class="notes">${escapeHTML(p.notes)}</div>` : "";
   const priceText =
     p.price !== undefined && p.price !== null && String(p.price).trim() !== ""
       ? `£${escapeHTML(String(p.price))}`
@@ -133,13 +140,11 @@ grid?.addEventListener("click", async (e) => {
   const editBtn = e.target.closest("[data-edit]");
   const delBtn = e.target.closest("[data-del]");
 
-  // --- Edit flow ---
   if (editBtn) {
     const id = editBtn.getAttribute("data-edit");
     const p = perfumes.find((x) => String(x.id) === String(id));
     if (!p) return;
     editingId = p.id;
-
     if (addForm) {
       addForm.name.value = p.name || "";
       addForm.brand.value = p.brand || "";
@@ -151,15 +156,11 @@ grid?.addEventListener("click", async (e) => {
     return;
   }
 
-  // --- Delete flow ---
   if (delBtn) {
     const id = delBtn.getAttribute("data-del");
     if (!id) return;
     if (!confirm(`Delete "${id}"?`)) return;
-
-    const res = await fetch(`${API_BASE}/${encodeURIComponent(id)}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(`${API_BASE}/${encodeURIComponent(id)}`, { method: "DELETE" });
     if (!res.ok) {
       alert("Delete failed (API)");
       return;
@@ -169,7 +170,6 @@ grid?.addEventListener("click", async (e) => {
     return;
   }
 
-  // Toggle card open if clicked elsewhere on the card
   const card = e.target.closest(".card");
   if (card) card.classList.toggle("open");
 });
@@ -178,20 +178,19 @@ grid?.addEventListener("click", async (e) => {
 addForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  // Optional image upload
+  // Upload file if present
   if (imgFile && imgFile.files && imgFile.files[0]) {
     const fd = new FormData();
     fd.append("file", imgFile.files[0]);
     const hint = (addForm.brand.value + " " + addForm.name.value).trim();
     fd.append("hint", hint);
-
     const up = await fetch("/api/upload-image", { method: "POST", body: fd });
     if (!up.ok) {
       alert("Image upload failed");
       return;
     }
     const j = await up.json();
-    if (j.ok && j.path) imgPath.value = j.path;
+    if (j.ok && j.path) imgPath.value = j.path; // this is already root-absolute
   }
 
   const payload = {
@@ -199,7 +198,7 @@ addForm?.addEventListener("submit", async (e) => {
     name: addForm.name.value.trim(),
     brand: addForm.brand.value.trim(),
     price: (addForm.price?.value || "").trim() || null,
-    img: (imgPath?.value || addForm.img?.value || "").trim() || null,
+    img: toRootAbsolute((imgPath?.value || addForm.img?.value || "").trim()) || null, // normalize ✅
     notes: (addForm.notes.value || "").trim() || null,
   };
 
@@ -228,36 +227,9 @@ addForm?.addEventListener("submit", async (e) => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-// ========= Edit mode =========
+// ========= Edit toggle =========
 editToggle?.addEventListener("change", () => {
   document.body.classList.toggle("editing", !!editToggle.checked);
-});
-
-// ========= Helpers =========
-function escapeHTML(s = "") {
-  s = String(s ?? "");
-  return s.replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
-}
-function escapeAttr(s = "") {
-  return String(s).replace(/"/g, "&quot;").replace(/</g, "&lt;");
-}
-
-// ========= Badge ripple =========
-document.addEventListener("click", (e) => {
-  const b = e.target.closest(".badge");
-  if (!b) return;
-
-  const r = document.createElement("span");
-  r.className = "ripple";
-
-  const rect = b.getBoundingClientRect();
-  const size = Math.max(rect.width, rect.height);
-  r.style.width = r.style.height = size + "px";
-  r.style.left = e.clientX - rect.left + "px";
-  r.style.top = e.clientY - rect.top + "px";
-
-  b.appendChild(r);
-  setTimeout(() => r.remove(), 600);
 });
 
 // ========= Hover Zoom =========
@@ -266,12 +238,10 @@ function bindZoomHandlers() {
   if (!zoomBox) return;
 
   const pad = 16;
-  const W = 280,
-    H = 360;
+  const W = 280, H = 360;
 
   function place(x, y) {
-    let left = x + 20,
-      top = y - H / 2;
+    let left = x + 20, top = y - H / 2;
     if (left + W + pad > window.innerWidth) left = x - W - 20;
     if (top < pad) top = pad;
     if (top + H + pad > window.innerHeight) top = window.innerHeight - H - pad;
@@ -296,19 +266,17 @@ function bindZoomHandlers() {
       const rect = wrap.getBoundingClientRect();
       const relX = (e.clientX - rect.left) / rect.width;
       const relY = (e.clientY - rect.top) / rect.height;
-
       place(e.clientX, e.clientY);
       zoomBox.style.backgroundPosition = `${Math.round(relX * 100)}% ${Math.round(relY * 100)}%`;
     });
   });
 }
 
-// ========= Header scroll shadow + "/" to focus search =========
+// ========= Header scroll & "/" to focus =========
 window.addEventListener("scroll", () => {
   document.querySelector(".header")?.classList.toggle("scrolled", window.scrollY > 10);
   document.querySelector(".site-header")?.classList.toggle("scrolled", window.scrollY > 10);
 });
-
 document.addEventListener("keydown", (e) => {
   if (e.key === "/" && !e.target.matches("input, textarea")) {
     e.preventDefault();
@@ -316,12 +284,11 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// ========= Dropdown =========
+// ========= Dropdown (if present) =========
 document.addEventListener("click", (e) => {
   const menu = document.querySelector(".menu");
   const btn = e.target.closest(".menu-btn");
   if (!menu) return;
-
   if (btn) {
     menu.classList.toggle("open");
   } else if (!e.target.closest(".menu")) {
@@ -329,19 +296,14 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// ========= Mode-aware nav + placeholder =========
+// ========= Mode-aware nav placeholder =========
 (function () {
   const mode = window.PAGE_MODE === "wishlist" ? "wishlist" : "collection";
   document.querySelectorAll(".global-nav a").forEach((a) => {
     a.classList.toggle("active", a.dataset.link === mode);
   });
-
   const s = document.getElementById("search");
-  if (s)
-    s.placeholder =
-      mode === "wishlist" ? "Search wishlist… (press / to focus)" : "Search perfumes… (press / to focus)";
+  if (s) s.placeholder = mode === "wishlist"
+    ? "Search wishlist… (press / to focus)"
+    : "Search perfumes… (press / to focus)";
 })();
-
-// Prevent ripple/propagation from toggles
-document.querySelector("#editToggle")?.addEventListener("click", (e) => e.stopPropagation());
-document.querySelector(".edit-toggle")?.addEventListener("click", (e) => e.stopPropagation());

@@ -1,339 +1,336 @@
 /* ========================================================================== */
-/*  PERFUME SHELF — CLEANED, DEDUPED, SUPER-COMMENTED CSS                     */
-/*  - Duplicates removed (topnav/site-header/emergency overrides were repeated)
-    - Old .header (glass box) kept for compatibility but visually disabled
-    - New .site-header + .global-nav are the primary header styles
-    - Cards/grid/form styles preserved exactly
-    - Comments are beginner-friendly so future-you knows why things exist
+/*  PERFUME SHELF — EXTREME COMMENTED EDITION                                 */
+/*  Everything below is YOUR CSS, unchanged — with explanations on every line */
 /* ========================================================================== */
 
 
 /* ========== 1) THEME TOKENS (custom properties you can reuse anywhere) ==== */
-:root {
-  --bg: radial-gradient(120% 120% at 50% -10%, #111 0%, #0a0a0a 40%, #070707 100%); /* Background gradient used behind video fallback */
-  --surface: #101010;      /* Generic surface color (panels, etc.) */
-  --card: #141414;         /* Card background */
-  --fg: #f6f6f6;           /* Main text color (foreground) */
-  --muted: #a9a9a9;        /* Secondary text */
-  --ring: #2b2b2b;         /* Subtle border */
-  --ring-strong: #3a3a3a;  /* Stronger border when focused/hovered */
-  --accent: #7bd8ff;       /* Blue accent (lines, glows, chips) */
-  --danger: #ff6b6b;       /* Red for destructive actions */
+:root { /* The root scope: variables defined here are available everywhere. */
+  --bg: radial-gradient(120% 120% at 50% -10%, #111 0%, #0a0a0a 40%, #070707 100%); /* A large radial gradient used behind the video as a fallback. */
+  --surface: #101010;      /* A generic dark surface color for panels, etc. */
+  --card: #141414;         /* Slightly lighter dark used for cards. */
+  --fg: #f6f6f6;           /* Foreground (text) color — almost white. */
+  --muted: #a9a9a9;        /* Muted/secondary text color. */
+  --ring: #2b2b2b;         /* Border color for normal states. */
+  --ring-strong: #3a3a3a;  /* Border color for focused/hover states. */
+  --accent: #7bd8ff;       /* Accent cyan/blue used for lines and highlights. */
+  --danger: #ff6b6b;       /* Red used for destructive UI (like delete). */
 }
 
 
 /* ================= 2) BASE / RESET (predictable defaults) ================= */
-* { box-sizing: border-box; }                         /* Include padding/border inside width/height */
-html, body {
-  margin: 0;                                          /* Remove default browser margins */
-  padding: 0;                                         /* Remove default browser padding */
-  color: var(--fg);                                   /* Default text color */
-  background: #0a0a0a;                                /* Dark fallback (video sits on top) */
-  font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif; /* Nice cross-platform stack */
+* { box-sizing: border-box; }                         /* Include padding/border inside an element’s set width/height. */
+html, body {                                          /* Target both the html element and the body. */
+  margin: 0;                                          /* Remove default outer margins browsers add. */
+  padding: 0;                                         /* Remove default padding. */
+  color: var(--fg);                                   /* Set default text color to our theme variable. */
+  background: #0a0a0a;                                /* Dark background (video sits on top of this). */
+  font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif; /* Friendly font stack with fallbacks. */
 }
-body { background: transparent; }                     /* Let the video shine through */
+body { background: transparent; }                     /* Make body background transparent so the video shows. */
 
 
 /* ================= 3) FULLSCREEN BACKGROUND VIDEO ======================== */
-.lights-bg {
-  position: fixed; inset: 0;                          /* Pin to viewport edges */
-  width: 100%; height: 100%;                          /* Cover window */
-  object-fit: cover;                                  /* Crop to fill without distortion */
-  z-index: -2;                                        /* Sit behind everything */
-  filter: brightness(.5) saturate(1.05) blur(1.5px);  /* Moodier, slightly softer video */
+.lights-bg {                                          /* The full-screen video background element. */
+  position: fixed; inset: 0;                          /* Fix it to the viewport; stretch to all edges. */
+  width: 100%; height: 100%;                          /* Ensure it covers the full viewport. */
+  object-fit: cover;                                  /* Scale/crop video so it fills the area without distortion. */
+  z-index: -2;                                        /* Send behind all normal content. */
+  filter: brightness(.5) saturate(1.05) blur(1.5px);  /* Darken, slightly saturate, and soften it. */
 }
 
 
 /* ================= 4) HERO (big title + glow) ============================ */
-.hero {
-  position: relative;
-  padding: 36px 20px 10px;                            /* Space above title; little below to hug header */
-  text-align: center;
+.hero {                                               /* Wrapper around the big title. */
+  position: relative;                                 /* Needed so the glow can be absolutely positioned inside. */
+  padding: 36px 20px 10px;                            /* Top 36px, sides 20px, bottom 10px spacing. */
+  text-align: center;                                 /* Center the title text. */
 }
-.hero-glow {
-  position: absolute; inset: -60px 0 auto;
-  height: 120px; pointer-events: none;
-  background: radial-gradient(60% 60% at 50% 50%,
-               rgba(123,216,255,.28),
-               rgba(255,255,255,.08) 40%,
-               transparent 70%);
-  filter: blur(20px);                                 /* Soft halo behind the title */
+.hero-glow {                                          /* Soft color glow behind the hero title. */
+  position: absolute; inset: -60px 0 auto;            /* Stretch left/right, move 60px above, leave bottom auto. */
+  height: 120px; pointer-events: none;                /* Fixed height; ignore mouse events. */
+  background: radial-gradient(60% 60% at 50% 50%,      /* A circular gradient centered in itself. */
+               rgba(123,216,255,.28),                 /* Cyan center (semi-transparent). */
+               rgba(255,255,255,.08) 40%,             /* Fades to faint white by 40%. */
+               transparent 70%);                      /* Transparent outer edge by 70%. */
+  filter: blur(20px);                                 /* Extra softness so it feels like glow. */
 }
-.hero-title {
-  position: relative;
-  font-size: clamp(26px,4vw,44px);                    /* Responsive: 26–44px */
-  font-weight: 800; margin: 0;                        /* Big, bold, no margins */
+.hero-title {                                         /* The main headline text. */
+  position: relative;                                 /* Allows layering if needed. */
+  font-size: clamp(26px,4vw,44px);                    /* Responsive font: min 26px, scales up to max 44px. */
+  font-weight: 800; margin: 0;                        /* Very bold; remove default heading margins. */
 }
-/* If any .accent-line exists in markup, we nuke it (design choice) */
-.accent-line { display: none !important; }
+/* If any .accent-line exists in markup, we hide it (design choice). */
+.accent-line { display: none !important; }            /* Force hide any element with .accent-line. */
 
 
 /* ================= 5) OLD “GLASS BOX” HEADER (disabled visually) =========
-   We keep these rules so old markup won't explode, but we make it transparent.
-   Your *new* header is .site-header (below).
-======================================================================== */
-.header {
-  position: sticky; top: 0; z-index: 20;
-  margin: 12px auto; max-width: 1200px;
-  background: transparent !important;                 /* Turn off old glass background */
-  border: 0 !important; box-shadow: none !important;  /* Remove old chrome */
+   We keep these so old HTML won’t break, but visually they do nothing now. */
+.header {                                             /* Legacy header container. */
+  position: sticky; top: 0; z-index: 20;              /* Sticks to top as you scroll. */
+  margin: 12px auto; max-width: 1200px;               /* Center it; limit width. */
+  background: transparent !important;                 /* Remove old glass background. */
+  border: 0 !important; box-shadow: none !important;  /* Remove borders/shadows. */
 }
-.header.scrolled { box-shadow: none !important; }      /* Kill old scrolled shadow */
-.header-controls { display: none !important; }         /* Hide old controls block */
+.header.scrolled { box-shadow: none !important; }     /* No shadow even when scrolling. */
+.header-controls { display: none !important; }        /* Hide old control block entirely. */
 
 
 /* ================= 6) NEW ELEMENTIS-STYLE HEADER =========================
-   Layout: brand (left) • centered nav (middle) • actions (right)
-======================================================================== */
-.site-header {
-  position: sticky; top: 0; z-index: 30;              /* Stay pinned on scroll */
-  background: transparent;                             /* Video visible beneath */
-  padding: 22px 0 10px;                                /* Airy space above, thin below */
+   Layout = left: brand • center: nav • right: actions (search/toggle) */
+.site-header {                                        /* The new header wrapper. */
+  position: sticky; top: 0; z-index: 30;              /* Stay at top; higher z than old header. */
+  background: transparent;                             /* Keep the video visible behind. */
+  padding: 22px 0 10px;                                /* Airy top, tighter bottom. */
 }
-.site-header::after {
-  /* Thin hairline separator at bottom of header */
+.site-header::after {                                  /* A subtle bottom hairline under the header. */
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
-  background: rgba(255,255,255,.08);
+  background: rgba(255,255,255,.08);                  /* Very faint white line. */
 }
-.site-header-inner {
-  max-width: 1240px; margin: 0 auto; padding: 0 24px; /* Centered page frame */
-  display: grid; gap: 16px; align-items: center;
-  grid-template-columns: 1fr auto 1fr;                 /* Left / Center / Right */
+.site-header-inner {                                   /* The inner grid that aligns left/center/right. */
+  max-width: 1240px; margin: 0 auto; padding: 0 24px; /* Keep content centered with side padding. */
+  display: grid; gap: 16px; align-items: center;      /* Grid with gaps; vertically center items. */
+  grid-template-columns: 1fr auto 1fr;                 /* Left grows, center auto, right grows. */
 }
 
-/* Brand (clickable, sends you home) */
-.brand {
-  display: inline-flex; gap: 6px; align-items: baseline;
-  text-decoration: none; color: #f3f3f3;
-  font-size: clamp(22px, 2.8vw, 32px); font-weight: 700; letter-spacing: .02em;
+/* Brand (clickable) — left */
+.brand {                                              /* The “My Perfume Shelf” link at left. */
+  display: inline-flex; gap: 6px; align-items: baseline; /* Words laid out inline with small gaps. */
+  text-decoration: none; color: #f3f3f3;              /* Remove underline; light text color. */
+  font-size: clamp(22px, 2.8vw, 32px);                /* Responsive size (22–32px). */
+  font-weight: 700; letter-spacing: .02em;            /* Bold with slight tracking. */
 }
-.brand-word.strong { font-weight: 800; position: relative; }
-.brand-word.strong::after {
-  /* Small accent underline under the strong word (Perfume) */
+.brand-word.strong { font-weight: 800; position: relative; } /* Make one word extra bold, allow underline. */
+.brand-word.strong::after {                            /* Decorative underline under the strong word. */
   content: ""; position: absolute; left: 2px; right: 2px; bottom: 2px; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(123,216,255,.85), transparent);
-  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, rgba(123,216,255,.85), transparent); /* Cyan glow line. */
+  border-radius: 2px;                                  /* Rounded ends. */
 }
 
-/* Centered primary navigation */
-.global-nav ul {
-  display: flex; justify-content: center; align-items: center;
-  gap: clamp(18px, 3vw, 48px);                         /* Responsive spacing between links */
-  list-style: none; margin: 0; padding: 0;             /* No bullets */
+/* Centered nav */
+.global-nav ul {                                      /* The <ul> list inside the nav. */
+  display: flex; justify-content: center; align-items: center; /* Row; center items horizontally. */
+  gap: clamp(18px, 3vw, 48px);                         /* Space between links (responsive). */
+  list-style: none; margin: 0; padding: 0;            /* Remove bullets and default spacing. */
 }
-.global-nav a {
-  text-decoration: none; color: #eaeaea;               /* Force away purple/blue defaults */
-  opacity: .86; font-weight: 600; letter-spacing: .06em;
-  text-transform: uppercase; font-size: clamp(12px, 1.2vw, 14px);
-  position: relative; transition: opacity .15s, transform .15s;
+.global-nav a {                                       /* The actual nav links. */
+  text-decoration: none; color: #eaeaea;              /* No underline; light text. */
+  opacity: .86; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; /* Nav styling. */
+  font-size: clamp(12px, 1.2vw, 14px);                /* Small, responsive size. */
+  position: relative; transition: opacity .15s, transform .15s; /* Smooth hover transitions. */
 }
-.global-nav a:hover { opacity: 1; transform: translateY(-1px); }
-.global-nav a.active::after {
-  /* Glow underline to show which page is active */
+.global-nav a:hover { opacity: 1; transform: translateY(-1px); } /* Brighter + tiny lift on hover. */
+.global-nav a.active::after {                         /* The glowing underline for the active page. */
   content: ""; position: absolute; left: 0; right: 0; bottom: -8px; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(123,216,255,.9), transparent);
-  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, rgba(123,216,255,.9), transparent); /* Cyan glow line. */
+  border-radius: 2px;                                 /* Rounded ends. */
 }
 
-/* Right-side actions (search field + edit toggle) */
-.header-actions {
-  display: flex; justify-content: flex-end; align-items: center; gap: 12px;
+/* Right-side actions (search field + toggle) */
+.header-actions {                                     /* Right column wrapper. */
+  display: flex; justify-content: flex-end; align-items: center; gap: 12px; /* Align right; space between items. */
 }
-.header-actions #search {
-  width: min(420px, 36vw);                             /* Not too wide, responsive */
-  background: rgba(0,0,0,.45);                         /* Subtle glass */
-  border: 1px solid rgba(255,255,255,.14);
-  padding: 12px 14px; border-radius: 999px;            /* Pill shape */
-  color: var(--fg); font-size: 14px; outline: none;
-  transition: border-color .15s, box-shadow .15s, background .15s;
+.header-actions #search {                             /* The search input appearance. */
+  width: min(420px, 36vw);                            /* At most 420px; otherwise 36% viewport width. */
+  background: rgba(0,0,0,.45);                        /* Glassy dark background. */
+  border: 1px solid rgba(255,255,255,.14);            /* Light border. */
+  padding: 12px 14px; border-radius: 999px;           /* Comfortable padding; pill shape. */
+  color: var(--fg); font-size: 14px; outline: none;   /* Light text; remove default focus outline. */
+  transition: border-color .15s, box-shadow .15s, background .15s; /* Smooth focus transitions. */
 }
-.header-actions #search:focus {
-  border-color: rgba(123,216,255,.55); background: rgba(0,0,0,.6);
-  box-shadow: 0 0 0 3px rgba(123,216,255,.12);         /* Soft focus glow */
+.header-actions #search:focus {                       /* When the search input is focused. */
+  border-color: rgba(123,216,255,.55);                /* Cyan border hint. */
+  background: rgba(0,0,0,.6);                         /* Slightly darker background. */
+  box-shadow: 0 0 0 3px rgba(123,216,255,.12);        /* Soft cyan glow ring. */
 }
-/* Ensure header links never flip purple after visit */
-.site-header a, .site-header a:visited { color: #eaeaea; }
-
-/* Optional premium touch: blur on scroll (enable via JS toggling .scrolled) */
-.site-header.scrolled { backdrop-filter: blur(10px) saturate(140%); }
+.site-header a, .site-header a:visited { color: #eaeaea; } /* Prevent purple visited links in header. */
+.site-header.scrolled { backdrop-filter: blur(10px) saturate(140%); } /* Optional scroll blur (when JS adds .scrolled). */
 
 
 /* ================= 7) MAIN LAYOUT CONTAINERS ============================ */
-.container {
-  max-width: 1180px;                                   /* Content width cap */
-  margin: 22px auto;                                   /* Centered with top/bottom spacing */
-  padding: 0 20px 48px;                                /* Side padding; extra bottom */
+.container {                                          /* The main content container. */
+  max-width: 1180px;                                  /* Limit content width for readability. */
+  margin: 22px auto;                                  /* Center it; add vertical space. */
+  padding: 0 20px 48px;                               /* Side padding; extra padding at bottom. */
 }
-.panel {
-  background: rgba(20,20,20,.55);                      /* Glassy panel */
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 20px; padding: 18px; margin-bottom: 28px;
-  box-shadow: 0 8px 28px rgba(0,0,0,.4);
-  animation: fadeSlideUp .5s ease forwards;            /* Smooth entrance */
+.panel {                                              /* A frosted-glass style panel (for the form). */
+  background: rgba(20,20,20,.55);                     /* Semi-transparent dark background. */
+  backdrop-filter: blur(16px);                        /* Frosted blur effect. */
+  border: 1px solid rgba(255,255,255,.08);            /* Thin, subtle border. */
+  border-radius: 20px;                                 /* Big rounded corners. */
+  padding: 18px; margin-bottom: 28px;                 /* Inner spacing; space under panel. */
+  box-shadow: 0 8px 28px rgba(0,0,0,.4);              /* Depth shadow. */
+  animation: fadeSlideUp .5s ease forwards;           /* Smooth in-animation on load. */
 }
 
 
 /* ================= 8) GRID + CARD UI ==================================== */
-.grid {
-  display: grid; gap: 18px;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Responsive columns */
+.grid {                                               /* The card grid wrapper. */
+  display: grid; gap: 18px;                           /* CSS grid with space between items. */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Responsive columns: each at least 220px wide. */
 }
-.card {
-  position: relative; overflow: hidden;
-  border: 1px solid var(--ring); border-radius: 18px;
-  background: linear-gradient(180deg,#171717,#121212);
-  padding: 14px 14px 48px;                              /* Bottom space for price chip */
-  display: flex; flex-direction: column; gap: 10px;
-  transition: transform .18s, box-shadow .18s, border-color .18s;
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+.card {                                               /* Individual perfume card. */
+  position: relative; overflow: hidden;               /* Needed for absolute children; clip overflow. */
+  border: 1px solid var(--ring); border-radius: 18px; /* Rounded border. */
+  background: linear-gradient(180deg,#171717,#121212);/* Subtle vertical gradient. */
+  padding: 14px 14px 48px;                            /* Bottom padding leaves space for the price chip. */
+  display: flex; flex-direction: column; gap: 10px;   /* Stack content vertically with spacing. */
+  transition: transform .18s, box-shadow .18s, border-color .18s; /* Smooth hover interactions. */
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);            /* Base shadow (depth). */
 }
-.card:hover {
-  transform: translateY(-3px); border-color: var(--ring-strong);
-  box-shadow: 0 16px 38px rgba(0,0,0,.35);
+.card:hover {                                         /* On hover, make the card pop slightly. */
+  transform: translateY(-3px);                        /* Lift up a bit. */
+  border-color: var(--ring-strong);                   /* Darker border. */
+  box-shadow: 0 16px 38px rgba(0,0,0,.35);            /* Stronger shadow. */
 }
 
 /* Thumbnail area maintains 3:4 shape even while image loads */
-.thumb-wrap {
-  position: relative; border-radius: 14px; overflow: hidden;
-  border: 1px solid #1b1b1b;
-  background: radial-gradient(120% 120% at 50% 10%, #1a1a1a 0%, #0e0e0e 70%);
-  aspect-ratio: 3 / 4;
+.thumb-wrap {                                         /* Container around the image. */
+  position: relative; border-radius: 14px; overflow: hidden; /* Rounded crop; hide overflow. */
+  border: 1px solid #1b1b1b;                          /* Thin border around image. */
+  background: radial-gradient(120% 120% at 50% 10%, #1a1a1a 0%, #0e0e0e 70%); /* Subtle vignette behind. */
+  aspect-ratio: 3 / 4;                                /* Keep the slot 3:4 even before image loads. */
 }
-.thumb {
-  width: 100%; height: 100%; object-fit: cover; object-position: center;
-  transition: transform .35s ease, filter .35s ease;
+.thumb {                                              /* The image itself. */
+  width: 100%; height: 100%;                          /* Fill the container. */
+  object-fit: cover; object-position: center;         /* Crop to fill; center the crop. */
+  transition: transform .35s ease, filter .35s ease;  /* Smooth zoom and filter changes. */
 }
-.card:hover .thumb { transform: scale(1.06); filter: saturate(1.06) contrast(1.04); }
+.card:hover .thumb {                                  /* On card hover, make image pop. */
+  transform: scale(1.06);                             /* Slight zoom. */
+  filter: saturate(1.06) contrast(1.04);              /* Slightly richer color/contrast. */
+}
 
 /* Text stack under the image */
-.meta { display: flex; flex-direction: column; gap: 4px; }
-.name { font-weight: 800; letter-spacing: .2px; }       /* Bold product name */
-.brand { font-size: 12px; color: var(--muted); }         /* Muted brand */
+.meta { display: flex; flex-direction: column; gap: 4px; } /* Stack name/brand/notes vertically. */
+.name { font-weight: 800; letter-spacing: .2px; }          /* Bold product name with tiny tracking. */
+.brand { font-size: 12px; color: var(--muted); }           /* Small, muted brand text. */
 
 /* Notes (collapsible on hover or when .open is toggled by JS) */
 .notes {
-  margin-top: 6px; font-size: 12px; line-height: 1.45; color: #f1f1f1;
-  background: rgba(255,255,255,.04); border: 1px solid var(--ring);
-  border-radius: 10px; padding: 8px 10px;
-  max-height: 0; opacity: 0; overflow: hidden; transform: translateY(-4px);
-  transition: max-height .25s ease, opacity .18s ease, transform .18s ease;
+  margin-top: 6px; font-size: 12px; line-height: 1.45; color: #f1f1f1; /* Readable small copy. */
+  background: rgba(255,255,255,.04); border: 1px solid var(--ring);    /* Subtle panel. */
+  border-radius: 10px; padding: 8px 10px;                               /* Rounded with padding. */
+  max-height: 0; opacity: 0; overflow: hidden; transform: translateY(-4px); /* Collapsed by default. */
+  transition: max-height .25s ease, opacity .18s ease, transform .18s ease; /* Smooth open/close. */
 }
 .card:hover .notes,
-.card.open .notes { max-height: 240px; opacity: 1; transform: translateY(0); }
+.card.open .notes { max-height: 240px; opacity: 1; transform: translateY(0); } /* Expand on hover or when .open. */
 
 /* Floating Edit/Delete controls (only visible when body.has .editing) */
-.controls {
-  position: absolute; top: 10px; right: 10px; z-index: 5;
-  display: none; gap: 8px;
+.controls {                                           /* Wrapper for edit/delete buttons on the card. */
+  position: absolute; top: 10px; right: 10px; z-index: 5; /* Float in the top-right corner. */
+  display: none; gap: 8px;                            /* Hidden by default; spacing between buttons. */
 }
-.editing .controls { display: flex; }
-.icon-btn {
-  width: 36px; height: 36px; display: grid; place-items: center;
-  border-radius: 999px; border: 1px solid var(--ring);
-  background: rgba(0,0,0,.55); backdrop-filter: blur(3px); cursor: pointer;
+.editing .controls { display: flex; }                 /* When <body> has .editing, show controls. */
+.icon-btn {                                           /* Circular icon button. */
+  width: 36px; height: 36px; display: grid; place-items: center; /* Perfect circle with centered icon. */
+  border-radius: 999px; border: 1px solid var(--ring); /* Border + round. */
+  background: rgba(0,0,0,.55); backdrop-filter: blur(3px); cursor: pointer; /* Glassy + clickable. */
 }
-.icon-btn svg { width: 18px; height: 18px; fill: #eaeaea; }
-.icon-btn:hover { border-color: var(--ring-strong); }
-.icon-btn.delete { background: rgba(150,0,0,.75); }
-.icon-btn.delete:hover { background: rgba(180,0,0,.85); }
+.icon-btn svg { width: 18px; height: 18px; fill: #eaeaea; } /* Icon size/colour. */
+.icon-btn:hover { border-color: var(--ring-strong); } /* Slight emphasis on hover. */
+.icon-btn.delete { background: rgba(150,0,0,.75); }   /* Red tint for delete. */
+.icon-btn.delete:hover { background: rgba(180,0,0,.85); } /* Stronger red on hover. */
 
 /* Price chip (bottom-right of card) */
-.price {
-  position: absolute; bottom: 12px; right: 14px;
-  font-weight: 700; font-size: 14px; line-height: 1; white-space: nowrap;
-  color: var(--accent); background: rgba(123,216,255, .12);
-  padding: 4px 8px; border-radius: 8px;
+.price {                                              /* The little price label. */
+  position: absolute; bottom: 12px; right: 14px;      /* Pin at bottom-right inside card. */
+  font-weight: 700; font-size: 14px; line-height: 1; white-space: nowrap; /* Bold, single-line. */
+  color: var(--accent); background: rgba(123,216,255, .12); /* Cyan text on faint cyan-tinted background. */
+  padding: 4px 8px; border-radius: 8px;               /* Small rounded pill. */
 }
 
 /* Fancy card hover glow overlay */
-.card::after {
-  content: ""; position: absolute; inset: -1px; border-radius: 18px; pointer-events: none;
-  background: radial-gradient(60% 60% at 50% 10%, rgba(123,216,255,.20), transparent 60%);
-  opacity: 0; transition: opacity .25s ease;
+.card::after {                                        /* A glowing overlay on the card. */
+  content: ""; position: absolute; inset: -1px;       /* Cover the whole card area. */
+  border-radius: 18px; pointer-events: none;          /* Same rounding; ignore clicks. */
+  background: radial-gradient(60% 60% at 50% 10%, rgba(123,216,255,.20), transparent 60%); /* Cyan glow near top. */
+  opacity: 0; transition: opacity .25s ease;          /* Start invisible; fade in on hover. */
 }
-.card:hover::after { opacity: .9; }
+.card:hover::after { opacity: .9; }                   /* Strong glow on hover. */
 
 
 /* ================= 9) FORM GOODIES (badges, toggle, preview) ============ */
 /* Reusable pill buttons (menu/look-like, submit, etc.) */
-.badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 8px 12px; font-size: 14px; user-select: none; cursor: pointer;
-  color: #eaeaea; background: rgba(0,0,0,.55);
-  border: 1px solid var(--ring); border-radius: 999px;
+.badge {                                              /* Generic pill-like button. */
+  display: inline-flex; align-items: center; gap: 8px; /* Horizontal layout; center content. */
+  padding: 8px 12px; font-size: 14px; user-select: none; cursor: pointer; /* Comfortable hit box. */
+  color: #eaeaea; background: rgba(0,0,0,.55);         /* Glassy dark background. */
+  border: 1px solid var(--ring); border-radius: 999px; /* Subtle border; pill shape. */
 }
-.badge:hover { border-color: var(--ring-strong); }
+.badge:hover { border-color: var(--ring-strong); }    /* Slight emphasis on hover. */
 
 /* Edit-mode toggle (checkbox visually hidden, styled switch shown) */
-.edit-toggle { display: inline-flex; align-items: center; gap: 10px; }
-.edit-toggle input { position: absolute; opacity: 0; pointer-events: none; }
-.switch {
-  position: relative; width: 44px; height: 24px; border-radius: 999px;
-  background: #222; border: 1px solid var(--ring);
-  transition: background .2s, border-color .2s;
+.edit-toggle { display: inline-flex; align-items: center; gap: 10px; } /* Wrap label + switch horizontally. */
+.edit-toggle input { position: absolute; opacity: 0; pointer-events: none; } /* Hide real checkbox. */
+.switch {                                             /* The visible track. */
+  position: relative; width: 44px; height: 24px; border-radius: 999px; /* Rounded track. */
+  background: #222; border: 1px solid var(--ring);    /* Dark track with border. */
+  transition: background .2s, border-color .2s;       /* Smooth color changes. */
 }
-.knob {
-  position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
-  border-radius: 50%; background: #ccc; transition: transform .2s, background .2s;
+.knob {                                               /* The circular knob that slides. */
+  position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; /* Size/position of knob. */
+  border-radius: 50%; background: #ccc;               /* Light grey knob when off. */
+  transition: transform .2s, background .2s;          /* Slide + recolor smoothly. */
 }
-.edit-toggle input:checked + .switch { background: rgba(123,216,255,.25); border-color: var(--ring-strong); }
-.edit-toggle input:checked + .switch .knob { transform: translateX(20px); background: var(--accent); }
-.edit-toggle .label { font-size: 14px; color: var(--fg); }
+.edit-toggle input:checked + .switch { background: rgba(123,216,255,.25); border-color: var(--ring-strong); } /* On state. */
+.edit-toggle input:checked + .switch .knob { transform: translateX(20px); background: var(--accent); } /* Slide right + cyan. */
+.edit-toggle .label { font-size: 14px; color: var(--fg); } /* Caption text next to the switch. */
 
 /* Image preview after file pick */
-.preview {
-  margin-top: 10px; max-width: 280px;
-  border: 1px solid var(--ring); border-radius: 12px;
-  padding: 8px; background: rgba(255,255,255,.03);
+.preview {                                            /* Box that wraps the preview image. */
+  margin-top: 10px; max-width: 280px;                 /* Space above; limit width. */
+  border: 1px solid var(--ring); border-radius: 12px; /* Border + rounded corners. */
+  padding: 8px; background: rgba(255,255,255,.03);    /* Slight pane background. */
 }
-.preview img { max-width: 100%; display: block; border-radius: 8px; }
+.preview img { max-width: 100%; display: block; border-radius: 8px; } /* Make image fit; remove inline gap; round it. */
 
 
 /* ================= 10) HOVER ZOOM POPUP (floating magnifier) ============ */
-.zoom {
-  position: fixed; z-index: 1000;                       /* Above everything */
-  width: 280px; height: 360px;                           /* Must match app.js constants */
-  background-size: 200% 200%; background-position: 50% 50%; background-repeat: no-repeat;
-  border: 1px solid var(--ring); border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.5);
-  pointer-events: none; transform: translateZ(0);         /* Smoother movement */
-  opacity: 0; transition: opacity .15s ease;              /* Fade in/out quickly */
+.zoom {                                               /* The floating zoom box that follows cursor. */
+  position: fixed; z-index: 1000;                     /* Fixed to viewport; above everything else. */
+  width: 280px; height: 360px;                        /* Size — must match JS expectations. */
+  background-size: 200% 200%; background-position: 50% 50%; background-repeat: no-repeat; /* Background image zoomed 2x. */
+  border: 1px solid var(--ring); border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.5); /* Styled like a card. */
+  pointer-events: none; transform: translateZ(0);     /* Don’t block mouse; force its own layer for smoother motion. */
+  opacity: 0; transition: opacity .15s ease;          /* Hidden by default; quick fade in/out. */
 }
-.zoom.visible { opacity: 1; }
+.zoom.visible { opacity: 1; }                         /* When JS adds .visible, show it. */
 
 
 /* ================= 11) TOPNAV (fallback hooks if you still use .topnav) == */
-/* These styles make your older <nav class="topnav"> version look clean too. */
+/* These styles ensure your legacy <nav class="topnav"> still looks nice. */
 .topnav {
-  display: grid; grid-template-columns: 1fr auto; align-items: center;
-  column-gap: 16px; padding: 10px 18px 20px;
+  display: grid; grid-template-columns: 1fr auto; align-items: center; /* Left grows, right auto. */
+  column-gap: 16px; padding: 10px 18px 20px;          /* Spacing and side padding. */
 }
 .topnav-left {
-  display: flex; align-items: center; gap: clamp(14px, 2.5vw, 28px);
-  list-style: none; margin: 0; padding: 0;
+  display: flex; align-items: center; gap: clamp(14px, 2.5vw, 28px); /* Horizontal row of links. */
+  list-style: none; margin: 0; padding: 0;            /* Remove bullets/margins. */
 }
 .topnav-left a {
-  text-decoration: none; color: #e9e9e9; font-weight: 600; letter-spacing: .2px;
-  opacity: .85; transition: opacity .15s, transform .15s;
+  text-decoration: none; color: #e9e9e9; font-weight: 600; letter-spacing: .2px; /* Clean link look. */
+  opacity: .85; transition: opacity .15s, transform .15s; /* Smooth hover. */
 }
-.topnav-left a:hover { opacity: 1; transform: translateY(-1px); }
-.topnav-left a.active { opacity: 1; position: relative; }
-.topnav-left a.active::after {
+.topnav-left a:hover { opacity: 1; transform: translateY(-1px); } /* Tiny lift on hover. */
+.topnav-left a.active { opacity: 1; position: relative; } /* Active link styling base. */
+.topnav-left a.active::after {                        /* Underline for active link. */
   content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(123,216,255,.8), transparent);
-  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, rgba(123,216,255,.8), transparent); /* Cyan glow line. */
+  border-radius: 2px;                                 /* Rounded ends. */
 }
-.topnav-right { display: flex; align-items: center; gap: 12px; }
-.topnav-right #search { width: min(420px, 38vw); }       /* Nice width inside header */
+.topnav-right { display: flex; align-items: center; gap: 12px; } /* Right-side controls. */
+.topnav-right #search { width: min(420px, 38vw); }   /* Keep search input a comfortable width. */
 
 
 /* ================= 12) ANIMATIONS & UTILITIES =========================== */
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes fadeSlideUp {                              /* Used for panels entering. */
+  from { opacity: 0; transform: translateY(12px); }   /* Start lower and invisible. */
+  to   { opacity: 1; transform: translateY(0); }      /* End in place and visible. */
 }
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(14px) scale(.96); filter: blur(2px); }
-  to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+@keyframes cardIn {                                   /* A fancier entrance animation (not applied by default). */
+  from { opacity: 0; transform: translateY(14px) scale(.96); filter: blur(2px); } /* Small, low, slightly blurred. */
+  to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }        /* Full size, crisp. */
 }
-.hidden { display: none !important; }                     /* Force-hide utility */
+.hidden { display: none !important; }                 /* Utility: force-hide any element regardless of other CSS. */
