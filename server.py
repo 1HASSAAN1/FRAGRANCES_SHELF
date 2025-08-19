@@ -1,9 +1,9 @@
-# app.py — returns root-absolute paths from /api/upload-image ✅
-from flask import Flask, jsonify, request, send_from_directory
+# server.py — cache-busting with version stamps
+from flask import Flask, jsonify, request, send_from_directory, render_template_string
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from PIL import Image
-import json, os, tempfile
+import json, os, tempfile, time
 from json import JSONDecodeError
 
 try:
@@ -62,14 +62,30 @@ def save_json(path: str, data):
         json.dump(data, f, ensure_ascii=False, indent=2)
     os.replace(tmp, path)
 
+def versioned(path: str) -> str:
+    """Return /static/path?v=last_modified_timestamp"""
+    full = os.path.join(STATIC_DIR, path)
+    v = int(os.path.getmtime(full)) if os.path.exists(full) else int(time.time())
+    return f"/static/{path}?v={v}"
+
 # -------- pages --------
 @app.get("/")
 def root():
-    return send_from_directory(APP_ROOT, "index.html")
+    html_path = os.path.join(APP_ROOT, "index.html")
+    with open(html_path, encoding="utf-8") as f:
+        html = f.read()
+    html = html.replace("/static/styles.css", versioned("styles.css"))
+    html = html.replace("/static/app.js", versioned("app.js"))
+    return render_template_string(html)
 
 @app.get("/wishlist")
 def wishlist_page():
-    return send_from_directory(APP_ROOT, "wishlist.html")
+    html_path = os.path.join(APP_ROOT, "wishlist.html")
+    with open(html_path, encoding="utf-8") as f:
+        html = f.read()
+    html = html.replace("/static/styles.css", versioned("styles.css"))
+    html = html.replace("/static/app.js", versioned("app.js"))
+    return render_template_string(html)
 
 # -------- uploads --------
 @app.post("/api/upload-image")
@@ -84,7 +100,6 @@ def upload_image():
 
     hint = (request.form.get("hint") or os.path.splitext(f.filename)[0]).strip()
     base = secure_filename(hint).lower() or "upload"
-
     os.makedirs(IMG_DIR, exist_ok=True)
 
     try:
@@ -98,7 +113,7 @@ def upload_image():
             path   = os.path.join(IMG_DIR, target)
             n += 1
         img.save(path, format="WEBP", quality=90, method=6)
-        rel = f"/static/img/{target}"  # root-absolute ✅
+        rel = f"/static/img/{target}"
         return jsonify({"ok": True, "path": rel})
     except Exception as e:
         ext = f.filename.rsplit(".", 1)[1].lower() if "." in f.filename else "jpg"
@@ -111,7 +126,7 @@ def upload_image():
                 path   = os.path.join(IMG_DIR, target)
                 n += 1
             f.save(path)
-            rel = f"/static/img/{target}"  # root-absolute ✅
+            rel = f"/static/img/{target}"
             return jsonify({"ok": True, "path": rel})
         return jsonify({"ok": False, "error": f"cannot process image: {e}"}), 400
 

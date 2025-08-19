@@ -94,12 +94,20 @@ body { background: transparent; }                     /* Make body background tr
 }
 
 /* Brand (clickable) — left */
-.brand {                                              /* The “My Perfume Shelf” link at left. */
-  display: inline-flex; gap: 6px; align-items: baseline; /* Words laid out inline with small gaps. */
-  text-decoration: none; color: #f3f3f3;              /* Remove underline; light text color. */
-  font-size: clamp(22px, 2.8vw, 32px);                /* Responsive size (22–32px). */
-  font-weight: 700; letter-spacing: .02em;            /* Bold with slight tracking. */
+.brand {
+  display: inline-flex;
+  gap: 6px;
+  align-items: baseline;
+  text-decoration: none;
+  color: #f3f3f3;
+
+  font-size: 16px;   /* ✅ fixed size — won’t grow too big */
+  font-weight: 700;
+  letter-spacing: .02em;
 }
+
+
+
 .brand-word.strong { font-weight: 800; position: relative; } /* Make one word extra bold, allow underline. */
 .brand-word.strong::after {                            /* Decorative underline under the strong word. */
   content: ""; position: absolute; left: 2px; right: 2px; bottom: 2px; height: 2px;
@@ -214,7 +222,7 @@ body.editing .edit-only {
 /* Text stack under the image */
 .meta { display: flex; flex-direction: column; gap: 4px; } /* Stack name/brand/notes vertically. */
 .name { font-weight: 800; letter-spacing: .2px; }          /* Bold product name with tiny tracking. */
-.brand { font-size: 12px; color: var(--muted); }           /* Small, muted brand text. */
+.card .brand { font-size: 12px; color: var(--muted); }           /* Small, muted brand text. */
 
 /* Notes (collapsible on hover or when .open is toggled by JS) */
 .notes {
@@ -344,3 +352,20 @@ body.editing .edit-only {
   to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }        /* Full size, crisp. */
 }
 .hidden { display: none !important; }                 /* Utility: force-hide any element regardless of other CSS. */
+
+/* Bigger header logo without going crazy */
+.site-header .brand {
+  font-size: clamp(15px, 3vw, 24px) !important; /* ~28px small → ~48px max */
+  line-height: 1.1;
+}
+
+.site-header .brand .brand-word {
+  font-size: inherit !important;
+}
+
+
+/* Safety: keep small brand text inside cards only */
+.card .brand {
+  font-size: 12px !important;
+  color: var(--muted);
+}
