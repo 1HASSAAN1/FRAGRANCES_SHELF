@@ -148,6 +148,16 @@ body { background: transparent; }                     /* Make body background tr
 
 
 /* ================= 7) MAIN LAYOUT CONTAINERS ============================ */
+
+/* Hide add/update form unless body.editing is on */
+.edit-only {
+  display: none;
+}
+body.editing .edit-only {
+  display: block;
+}
+ 
+
 .container {                                          /* The main content container. */
   max-width: 1180px;                                  /* Limit content width for readability. */
   margin: 22px auto;                                  /* Center it; add vertical space. */

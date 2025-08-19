@@ -1,13 +1,5 @@
 [
   {
-    "id": "maison-alhambra-jean-lowe-vibe",
-    "name": "Jean Lowe Vibe",
-    "brand": "Maison Alhambra",
-    "price": "25",
-    "img": "static/img/maison_alhambra_jean_lowe_vibe-4.webp",
-    "notes": "Top notes are Black Currant, Coriander, Mint, Citron, Lemon and Orange; middle notes are Carrot Seeds, May Rose, Apricot and Basil; base notes are Fig, Ambrette and Dates."
-  },
-  {
     "id": "xerjoff-xj-1861-naxos",
     "name": "XJ 1861 Naxos",
     "brand": "Xerjoff",

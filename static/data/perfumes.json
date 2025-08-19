@@ -4,107 +4,120 @@
     "name": "Invictus",
     "brand": "Paco Rabanne",
     "price": "65",
-    "img": "static/img/invictus.jpg",
-    "notes": "Fresh aquatic citrus with ambergris vibe. Great gym/daytime."
+    "img": "/static/img/invictus.jpg",
+    "notes": "Top notes are Sea Notes, Grapefruit and Mandarin Orange; middle notes are Bay Leaf and Jasmine; base notes are Ambergris, Guaiac Wood, Oakmoss and Patchouli."
   },
   {
     "id": "mtj-studio",
     "name": "Studio",
     "brand": "MTJ",
-    "img": "static/img/mtj-studio.webp",
-    "notes": "Clean woody-aromatic; office-safe and versatile."
+    "price": "38",
+    "img": "/static/img/mtj-studio.webp",
+    "notes": "Top Notes - Cardamom, Pink Pepper, Violet Leaves Heart Notes - Lavender, Sage, Apple Base Notes - Vanilla, Amber, Cedarwood, Musk"
   },
   {
     "id": "mtj-mahnoor",
     "name": "Mahnoor",
     "brand": "MTJ",
-    "img": "static/img/mtj-mahnoor.webp",
-    "notes": "White florals + musk; soft, slightly sweet."
+    "price": "34",
+    "img": "/static/img/mtj-mahnoor.webp",
+    "notes": "Top Notes: The tart sweetness of wild raspberry pairs with the zesty brightness of tangerine, creating an invigorating and adventurous opening. •    Middle Notes: The delicate allure of rose and the radiant glow of orange blossom bloom into a heart that is both soft and captivating. •    Base Notes: The sensual depth of oud blends with the softness of musk and the comforting warmth of vanilla, leaving a luxurious and unforgettable trail."
   },
   {
     "id": "mtj-ombre-black",
     "name": "Ombre Black",
     "brand": "MTJ",
-    "img": "static/img/mtj-ombre-black.jpg?v=2",
-    "notes": "Dark vanilla/woods mood—evening friendly."
+    "price": "24",
+    "img": "/static/img/mtj-ombre-black.jpg?v=2",
+    "notes": "Top Note: Cardamom, Smoky Heart Note: Leather, White Floral Base Note: Patchouli, Amber, Musk,"
   },
   {
     "id": "lattafa-khamrah",
     "name": "Khamrah",
     "brand": "Lattafa",
-    "img": "static/img/khamrah.webp",
-    "notes": "Cinnamon, praline, boozy sweetness; cozy cold-weather beast."
+    "price": "35",
+    "img": "/static/img/khamrah.webp",
+    "notes": "TOP NOTES Cinnamon, Nutmeg and Bergamot.  Heart Notes Dates, Praline, Tuberose and Mahonial.  BASE NOTE Vanilla, Tonka Bean, Benzoin, Amberwood, Myrrh and Akigalawood."
   },
   {
     "id": "janan-platinum",
     "name": "Janan Platinum",
     "brand": "J.",
     "price": "40",
-    "img": "static/img/janan_platinum.webp",
-    "notes": "Elegant woody-spicy fragrance with a warm, long-lasting base."
+    "img": "/static/img/janan_platinum.webp",
+    "notes": "category:Citrus, Spicy  Main Accords Top Notes:Bergamot, Petit Grain, Ginger Heart Notes:Geranium, Tea, Incense Base Notes:Guaiacwood, Ambroxan, Musk"
   },
   {
     "id": "janan-vanilla",
     "name": "Janan Vanilla",
     "brand": "J.",
-    "img": "static/img/j._janan_vanilla.webp",
-    "notes": "Sweet and creamy vanilla fragrance with a smooth, comforting dry-down."
+    "price": "40",
+    "img": "/static/img/j._janan_vanilla.webp",
+    "notes": "Top Notes: Chestnut Heart Notes: Pepper Oil, Black LMR, Orris, Vanilla Base Notes: Olibanum Resinoid MD LMR, Patchouli Oil Indonesia MD LMR, Suede"
   },
   {
     "id": "janan-sport",
     "name": "Janan Sport",
     "brand": "J.",
-    "img": "static/img/j._janan_sport.webp",
-    "notes": "Fresh, energetic citrus and aromatic blend — ideal for casual wear."
+    "price": null,
+    "img": "/static/img/j._janan_sport.webp",
+    "notes": "Main Accords: Chypre, Amber, Woody, Citrusy, Musky  Top Notes:¬€ Bergamot, Lemon, Pineapple, Pink Pepper, Blackcurrant, Plum, Mandarin, Marine Notes  Heart Notes:¬€ Rose, Geranium, Jasmine, Lily of the valley  Base Notes:¬€ Cedarwood, Patchouli, Ambergris, Tonka, Vanilla, Musk"
   },
   {
     "id": "janan-gold",
     "name": "Janan Gold",
     "brand": "J.",
-    "img": "static/img/j._janan_gold.webp",
-    "notes": "Rich, warm oriental blend with a luxurious amber and spice profile."
+    "price": "40",
+    "img": "/static/img/j._janan_gold.webp",
+    "notes": "Top notes are Red Apple, Bergamot, Pineapple and Black Currant; middle notes are Rose, Jasmine, Patchouli and Birch; base notes are Vanilla, Amber, Musk, Leather and Oakmoss."
   },
   {
     "id": "janan-intense",
     "name": "Janan Intense",
     "brand": "J.",
-    "img": "static/img/j._janan_intense.webp",
-    "notes": "Deep, bold oriental fragrance with rich spices and woods."
+    "price": "40",
+    "img": "/static/img/j._janan_intense.webp",
+    "notes": "Category:Citrus Musky  Main Accords Top Notes:Bergamot, Lemon, Orange Heart Notes:Rose, Jasmine, Rosemary, Juniper Berry Base Notes:Patchouli, Amber, Leather, Musk"
   },
   {
     "id": "janan-tobacco",
     "name": "Janan Tobacco",
     "brand": "J.",
-    "img": "static/img/j._janan_tobacco.webp",
+    "price": "Category: Woody  Main Accords Top Notes: Bergamot, Tobacco, Peru Balsam, Rose Essence Heart Notes: Heliotrope Flower, Honey, Cinnamon, Saffron Base Notes: Indian Sandalwood, Caramel, Orcanox, Vanilla Abs, Oud",
+    "img": "/static/img/j._janan_tobacco.webp",
     "notes": "Warm, sweet tobacco accord with hints of honey and spice."
   },
   {
     "id": "janan-oud",
     "name": "Janan Oud",
     "brand": "J.",
-    "img": "static/img/j._janan_oud.webp",
-    "notes": "Opulent oud fragrance with smoky, resinous depth."
+    "price": "40",
+    "img": "/static/img/j._janan_oud.webp",
+    "notes": "Category: Ambery, Citrusy, Musky, Spicy, Woody  Main Accords Top Notes: Rasberry, Saffron, Clove Ozone Accord Heart Notes: Lily of the Valley, Rose, Jasmine, Geranium, Tuberose, Tea Base Notes: Musk, Amber, Agarwood, Amyris, Sandalwood, Vanilla, Moss, Leather, Nagarmotha, Patchouli"
   },
   {
     "id": "j-marine",
     "name": "J. Marine",
     "brand": "J.",
-    "img": "static/img/j._j._marine.webp",
-    "notes": "Aquatic and refreshing scent with marine notes and light woods."
+    "price": "60",
+    "img": "/static/img/j._j._marine.webp",
+    "notes": "Main Accords: Top Notes: Grape Fruit, Marine Accord Heart Notes: Apple Blossom, Bay Leaves, White Patchouli Base Notes: Gaiac Wood, Moss, Ambergris"
   },
   {
     "id": "j-frontline",
     "name": "J. Frontline",
     "brand": "J.",
-    "img": "static/img/j._j._frontline-1.webp",
-    "notes": "Bold and energetic fragrance with fresh spices and citrus."
+    "price": "60",
+    "img": "/static/img/j._j._frontline-1.webp",
+    "notes": "Category: Warm Spicy, Woody  Main Accords: Top Notes: Mandarine, Pink Peppercorn, Rose Heart Notes: Cedarwood, Patchouli Base Notes: Vanilla, Amber"
   },
   {
     "id": "j-great-summit",
     "name": "J. Great Summit",
     "brand": "J.",
-    "img": "static/img/j._j._great_summit.webp",
-    "notes": "Adventurous woody-aromatic blend inspired by the great outdoors."
+    "price": "30",
+    "img": "/static/img/j._j._great_summit.webp",
+    "notes": "Main Accords Top Notes: Bergamot, Lemon Heart Notes: Violet Leaf, Clary Sage, Geranium Egypt, Lavender Base Notes: Musk, Patchouli Indonesia, Amber, Petitgrain Paraguay"
   },
   {
     "name": "Bade'e Al Oud Oud for Glory",
@@ -114,88 +127,100 @@
     "id": "lattafa-bade-e-al-oud-oud-for-glory"
   },
   {
+    "id": "j-wasim-akram-502",
     "name": "Wasim Akram 502",
     "brand": "J.",
-    "img": "static/img/j._wasim_akram_502.webp",
-    "notes": "Top notes are Cardamom, Apple and Sweet Orange; middle notes are Juniper Berries, Lavender and Clary Sage; base notes are Patchouli, Amber and Oakmoss.",
-    "id": "j-wasim-akram-502"
+    "price": "40",
+    "img": "/static/img/j._wasim_akram_502.webp",
+    "notes": "Top notes are Cardamom, Apple and Sweet Orange; middle notes are Juniper Berries, Lavender and Clary Sage; base notes are Patchouli, Amber and Oakmoss."
   },
   {
+    "id": "saeed-ghani-sultan",
     "name": "Sultan",
     "brand": "Saeed Ghani",
-    "img": "static/img/saeed_ghani_sultan.webp",
-    "notes": "Top Notes: Cardamom and Amber  Middle Notes: Leather,Jasmine, Spices  Base Notes: Oakmoss and Patchouli",
-    "id": "saeed-ghani-sultan"
+    "price": "20",
+    "img": "/static/img/saeed_ghani_sultan.webp",
+    "notes": "Top Notes: Cardamom and Amber  Middle Notes: Leather,Jasmine, Spices  Base Notes: Oakmoss and Patchouli"
   },
   {
     "id": "saeed-ghani-shah-intense",
     "name": "Shah Intense",
     "brand": "Saeed Ghani",
-    "img": "static/img/saeed_ghani_shah_intense.webp",
+    "price": "20",
+    "img": "/static/img/saeed_ghani_shah_intense.webp",
     "notes": "Top Notes: Cardamom  Middle Notes: Leather and Jasmine Sambac  Base Notes: Amber, Moss and Patchouli"
   },
   {
+    "id": "saeed-ghani-haider",
     "name": "Haider",
     "brand": "Saeed Ghani",
-    "img": "static/img/saeed_ghani_haider.webp",
-    "notes": "Notes - Top Notes: Pineapple, Bergamot, Black Currant and Apple  Middle Notes: Birch, Patchouli, Moroccan Jasmine and Rose  Base Notes: Musk, Oak Moss, Ambergris and Vanilla",
-    "id": "saeed-ghani-haider"
+    "price": "20",
+    "img": "/static/img/saeed_ghani_haider.webp",
+    "notes": "Notes - Top Notes: Pineapple, Bergamot, Black Currant and Apple  Middle Notes: Birch, Patchouli, Moroccan Jasmine and Rose  Base Notes: Musk, Oak Moss, Ambergris and Vanilla"
   },
   {
+    "id": "saeed-ghani-ghilaf-e-kaaba",
     "name": "Ghilaf e Kaaba",
     "brand": "Saeed Ghani",
-    "img": "static/img/saeed_ghani_ghilaf_e_kaaba.webp",
-    "notes": "top notes of vetiver and woody notes. In the keynote. there is a touch of warm and spicy notes giving off a luxurious aroma. In base, notes are of agarwood, musk, and sandalwood.",
-    "id": "saeed-ghani-ghilaf-e-kaaba"
+    "price": "20",
+    "img": "/static/img/saeed_ghani_ghilaf_e_kaaba.webp",
+    "notes": "top notes of vetiver and woody notes. In the keynote. there is a touch of warm and spicy notes giving off a luxurious aroma. In base, notes are of agarwood, musk, and sandalwood."
   },
   {
+    "id": "saeed-ghani-khan",
     "name": "Khan",
     "brand": "Saeed Ghani",
-    "img": "static/img/saeed_ghani_khan.webp",
-    "notes": "Top Notes: Lemon, Mint, Pink Pepper, Grapefruit Middle Notes: Ginger, Nutmeg, Jasmine Base Notes: Incense, Cedar, Sandalwood, Patchouli, White Musk",
-    "id": "saeed-ghani-khan"
+    "price": "20",
+    "img": "/static/img/saeed_ghani_khan.webp",
+    "notes": "Top Notes: Lemon, Mint, Pink Pepper, Grapefruit Middle Notes: Ginger, Nutmeg, Jasmine Base Notes: Incense, Cedar, Sandalwood, Patchouli, White Musk"
   },
   {
+    "id": "saeed-ghani-shahi-khus",
     "name": "Shahi Khus",
     "brand": "Saeed Ghani",
-    "img": "static/img/saeed_ghani_shahi_khus.webp",
-    "notes": "Top Notes: Bergamot, Pink Pepper and Iris  Middle Notes: Jasmine, Vetiver and Almond  Base Notes: Sandalwood, Tonka Bean and Patchouli",
-    "id": "saeed-ghani-shahi-khus"
+    "price": "20",
+    "img": "/static/img/saeed_ghani_shahi_khus.webp",
+    "notes": "Top Notes: Bergamot, Pink Pepper and Iris  Middle Notes: Jasmine, Vetiver and Almond  Base Notes: Sandalwood, Tonka Bean and Patchouli"
   },
   {
+    "id": "mtj-fateh",
     "name": "Fateh",
     "brand": "MTJ",
-    "img": "static/img/mtj_fateh.webp",
-    "notes": "Top Notes: Grapefruit, Lemon, Mint, Pink Pepper  Heart (Middle) Notes: Nutmeg, Ginger, Jasmine, Iso E Super  Base Notes: Labdanum, Sandalwood, Patchouli, Vetiver, Incense",
-    "id": "mtj-fateh"
+    "price": "30",
+    "img": "/static/img/mtj_fateh.webp",
+    "notes": "Top Notes: Grapefruit, Lemon, Mint, Pink Pepper  Heart (Middle) Notes: Nutmeg, Ginger, Jasmine, Iso E Super  Base Notes: Labdanum, Sandalwood, Patchouli, Vetiver, Incense"
   },
   {
+    "id": "wb-hemani-oudh-saffron",
     "name": "Oudh Saffron",
     "brand": "WB Hemani",
-    "img": "static/img/wb_hemani_oudh_saffron.webp",
-    "notes": "Top Note: Labdanum  Heart Note: Rose, Patchouli  Base Note: Oud, Cedarwood  Inspiration: Oud Ispahan by Dior",
-    "id": "wb-hemani-oudh-saffron"
+    "price": "25",
+    "img": "/static/img/wb_hemani_oudh_saffron.webp",
+    "notes": "Top Note: Labdanum  Heart Note: Rose, Patchouli  Base Note: Oud, Cedarwood  Inspiration: Oud Ispahan by Dior"
   },
   {
+    "id": "wb-hemani-oudh-intense",
     "name": "Oudh Intense",
     "brand": "WB Hemani",
-    "img": "static/img/wb_hemani_oudh_intense.webp",
-    "notes": "Top Note: Saffron, Leathery  Heart Note: Rose, Violet  Base Note: Maltol, Patchouli, Dry Amber, Oudwood  Inspiration: Riviere by Thameen",
-    "id": "wb-hemani-oudh-intense"
+    "price": "25",
+    "img": "/static/img/wb_hemani_oudh_intense.webp",
+    "notes": "Top Note: Saffron, Leathery  Heart Note: Rose, Violet  Base Note: Maltol, Patchouli, Dry Amber, Oudwood  Inspiration: Riviere by Thameen"
   },
   {
+    "id": "wb-hemani-poetic-whispers",
     "name": "Poetic Whispers",
     "brand": "WB Hemani",
-    "img": "static/img/wb_hemani_poetic_whispers.jpeg",
-    "notes": "Top – Orange, Lemon, Blackcurrant, Fruity Notes, Green Notes  Heart – Gardenia, Magnolia, Rose  Base – Patchouli, Sandalwood, Amber Notes, Musky Notes",
-    "id": "wb-hemani-poetic-whispers"
+    "price": "30",
+    "img": "/static/img/wb_hemani_poetic_whispers.jpeg",
+    "notes": "Top – Orange, Lemon, Blackcurrant, Fruity Notes, Green Notes  Heart – Gardenia, Magnolia, Rose  Base – Patchouli, Sandalwood, Amber Notes, Musky Notes"
   },
   {
+    "id": "j-defender-pour-homme",
     "name": "DEFENDER POUR HOMME",
     "brand": "J.",
-    "img": "static/img/j._defender_pour_homme.webp",
-    "notes": "Top Notes:Bergamot, Cardamom, Violet Leaves Heart Notes: Cinnamon, Lily of the Valley Base Notes: Leather, Sandalwood, Tonka Beans, Vanilla",
-    "id": "j-defender-pour-homme"
+    "price": "60",
+    "img": "/static/img/j._defender_pour_homme.webp",
+    "notes": "Top Notes:Bergamot, Cardamom, Violet Leaves Heart Notes: Cinnamon, Lily of the Valley Base Notes: Leather, Sandalwood, Tonka Beans, Vanilla"
   },
   {
     "id": "jean-paul-gaultier-le-male-elixir",
