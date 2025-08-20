@@ -182,92 +182,207 @@ body.editing .edit-only {
 }
 
 
-/* ================= 8) GRID + CARD UI ==================================== */
-.grid {                                               /* The card grid wrapper. */
-  display: grid; gap: 18px;                           /* CSS grid with space between items. */
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Responsive columns: each at least 220px wide. */
-}
-.card {                                               /* Individual perfume card. */
-  position: relative; overflow: hidden;               /* Needed for absolute children; clip overflow. */
-  border: 1px solid var(--ring); border-radius: 18px; /* Rounded border. */
-  background: linear-gradient(180deg,#171717,#121212);/* Subtle vertical gradient. */
-  padding: 14px 14px 48px;                            /* Bottom padding leaves space for the price chip. */
-  display: flex; flex-direction: column; gap: 10px;   /* Stack content vertically with spacing. */
-  transition: transform .18s, box-shadow .18s, border-color .18s; /* Smooth hover interactions. */
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);            /* Base shadow (depth). */
-}
-.card:hover {                                         /* On hover, make the card pop slightly. */
-  transform: translateY(-3px);                        /* Lift up a bit. */
-  border-color: var(--ring-strong);                   /* Darker border. */
-  box-shadow: 0 16px 38px rgba(0,0,0,.35);            /* Stronger shadow. */
+/* ================= 8) GRID + CARD UI — Frosted + Aurora Ring ============ */
+
+/* Grid wrapper */
+.grid{
+  display:grid;
+  gap:18px;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
 }
 
-/* Thumbnail area maintains 3:4 shape even while image loads */
-.thumb-wrap {                                         /* Container around the image. */
-  position: relative; border-radius: 14px; overflow: hidden; /* Rounded crop; hide overflow. */
-  border: 1px solid #1b1b1b;                          /* Thin border around image. */
-  background: radial-gradient(120% 120% at 50% 10%, #1a1a1a 0%, #0e0e0e 70%); /* Subtle vignette behind. */
-  aspect-ratio: 3 / 4;                                /* Keep the slot 3:4 even before image loads. */
-}
-.thumb {                                              /* The image itself. */
-  width: 100%; height: 100%;                          /* Fill the container. */
-  object-fit: cover; object-position: center;         /* Crop to fill; center the crop. */
-  transition: transform .35s ease, filter .35s ease;  /* Smooth zoom and filter changes. */
-}
-.card:hover .thumb {                                  /* On card hover, make image pop. */
-  transform: scale(1.06);                             /* Slight zoom. */
-  filter: saturate(1.06) contrast(1.04);              /* Slightly richer color/contrast. */
+/* --------- Card base (frosted glass) --------- */
+.card{
+  position:relative;
+  isolation:isolate;                 /* keep effects contained */
+  overflow:hidden;
+  border-radius:18px;
+
+  /* glass: stronger blur + saturation */
+  background:rgba(28,28,32,.42);     /* more transparent so blur shows */
+  backdrop-filter:blur(14px) saturate(160%);
+  -webkit-backdrop-filter:blur(14px) saturate(160%);
+
+  /* faint border for definition */
+  border:1px solid rgba(255,255,255,.08);
+
+  /* layout */
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:14px 14px 52px;            /* room for price chip */
+
+  /* depth + interactions */
+  box-shadow:0 10px 30px rgba(0,0,0,.28);
+  transition:
+    transform .28s cubic-bezier(.22,.75,.25,1),
+    box-shadow .28s,
+    border-color .28s,
+    background-color .28s;
 }
 
-/* Text stack under the image */
-.meta { display: flex; flex-direction: column; gap: 4px; } /* Stack name/brand/notes vertically. */
-.name { font-weight: 800; letter-spacing: .2px; }          /* Bold product name with tiny tracking. */
-.card .brand { font-size: 12px; color: var(--muted); }           /* Small, muted brand text. */
+.card:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:
+    0 18px 44px rgba(0,0,0,.42),
+    0 0 18px rgba(123,216,255,.10);  /* subtle ambient glow */
+  border-color:rgba(255,255,255,.12);
+}
 
-/* Notes (collapsible on hover or when .open is toggled by JS) */
-.notes {
-  margin-top: 6px; font-size: 12px; line-height: 1.45; color: #f1f1f1; /* Readable small copy. */
-  background: rgba(255,255,255,.04); border: 1px solid var(--ring);    /* Subtle panel. */
-  border-radius: 10px; padding: 8px 10px;                               /* Rounded with padding. */
-  max-height: 0; opacity: 0; overflow: hidden; transform: translateY(-4px); /* Collapsed by default. */
-  transition: max-height .25s ease, opacity .18s ease, transform .18s ease; /* Smooth open/close. */
+/* Fallback if backdrop-filter unsupported: make the panel a touch lighter */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
+  .card{ background:#17181b; }
+}
+
+/* --------- Aurora ring (cleaner “neon”) --------- */
+/* Outer animated ring (masked border) */
+.card::before{
+  content:"";
+  position:absolute; inset:0;
+  border-radius:inherit;
+  padding:1.6px;                      /* ring thickness */
+
+  background:
+    conic-gradient(
+      from 0deg,
+      rgba(123,216,255,.7),
+      rgba(255,255,255,.08) 20%,
+      rgba(123,216,255,.6) 40%,
+      rgba(255,255,255,.08) 60%,
+      rgba(123,216,255,.7) 80%,
+      rgba(255,255,255,.08) 100%
+    );
+
+  /* mask the middle so only the border shows */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+
+  opacity:.0;
+  transform:rotate(0deg);
+  transition:opacity .35s ease;
+  animation:aurora-spin 14s linear infinite;
+  animation-play-state:paused;         /* only spins on hover/focus */
+  pointer-events:none;
+  z-index:0;
+}
+
+.card:hover::before,
+.card:focus-within::before{
+  opacity:.55;
+  animation-play-state:running;
+}
+
+/* Soft inner glow to make content pop */
+.card::after{
+  content:"";
+  position:absolute; inset:2px;
+  border-radius:16px;
+  background:
+    radial-gradient(60% 60% at 20% 10%,
+      rgba(123,216,255,.12), transparent 65%),
+    radial-gradient(80% 80% at 80% 90%,
+      rgba(255,255,255,.05), transparent 70%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* Keep card children above effects */
+.card > *{ position:relative; z-index:1; }
+
+@keyframes aurora-spin { to{ transform:rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce){
+  .card{ transition:none; }
+  .card:hover{ transform:none; }
+  .card::before{ animation:none; opacity:.35; }
+}
+
+/* --------- Image area --------- */
+.thumb-wrap{
+  position:relative;
+  overflow:hidden;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);
+  background:
+    radial-gradient(120% 120% at 50% 10%, #1b1d22 0%, #0f1114 70%);
+  aspect-ratio:3/4;
+}
+
+.thumb{
+  width:100%; height:100%;
+  object-fit:cover; object-position:center;
+  transition:transform .5s ease, filter .5s ease;
+  will-change:transform;
+}
+.card:hover .thumb{
+  transform:scale(1.05);
+  filter:saturate(1.06) contrast(1.04);
+}
+
+/* --------- Text stack --------- */
+.meta{ display:flex; flex-direction:column; gap:4px; }
+.name{ font-weight:800; letter-spacing:.2px; }
+.card .brand{ font-size:12px; color:var(--muted); }
+
+/* --------- Notes (collapsible) --------- */
+.notes{
+  margin-top:6px;
+  font-size:12px; line-height:1.45; color:#f1f1f1;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--ring);
+  border-radius:10px;
+  padding:8px 10px;
+
+  max-height:0; opacity:0; overflow:hidden;
+  transform:translateY(-4px);
+  transition:max-height .25s ease, opacity .18s ease, transform .18s ease;
 }
 .card:hover .notes,
-.card.open .notes { max-height: 240px; opacity: 1; transform: translateY(0); } /* Expand on hover or when .open. */
-
-/* Floating Edit/Delete controls (only visible when body.has .editing) */
-.controls {                                           /* Wrapper for edit/delete buttons on the card. */
-  position: absolute; top: 10px; right: 10px; z-index: 5; /* Float in the top-right corner. */
-  display: none; gap: 8px;                            /* Hidden by default; spacing between buttons. */
-}
-.editing .controls { display: flex; }                 /* When <body> has .editing, show controls. */
-.icon-btn {                                           /* Circular icon button. */
-  width: 36px; height: 36px; display: grid; place-items: center; /* Perfect circle with centered icon. */
-  border-radius: 999px; border: 1px solid var(--ring); /* Border + round. */
-  background: rgba(0,0,0,.55); backdrop-filter: blur(3px); cursor: pointer; /* Glassy + clickable. */
-}
-.icon-btn svg { width: 18px; height: 18px; fill: #eaeaea; } /* Icon size/colour. */
-.icon-btn:hover { border-color: var(--ring-strong); } /* Slight emphasis on hover. */
-.icon-btn.delete { background: rgba(150,0,0,.75); }   /* Red tint for delete. */
-.icon-btn.delete:hover { background: rgba(180,0,0,.85); } /* Stronger red on hover. */
-
-/* Price chip (bottom-right of card) */
-.price {                                              /* The little price label. */
-  position: absolute; bottom: 12px; right: 14px;      /* Pin at bottom-right inside card. */
-  font-weight: 700; font-size: 14px; line-height: 1; white-space: nowrap; /* Bold, single-line. */
-  color: var(--accent); background: rgba(123,216,255, .12); /* Cyan text on faint cyan-tinted background. */
-  padding: 4px 8px; border-radius: 8px;               /* Small rounded pill. */
+.card.open .notes{
+  max-height:240px; opacity:1; transform:translateY(0);
 }
 
-/* Fancy card hover glow overlay */
-.card::after {                                        /* A glowing overlay on the card. */
-  content: ""; position: absolute; inset: -1px;       /* Cover the whole card area. */
-  border-radius: 18px; pointer-events: none;          /* Same rounding; ignore clicks. */
-  background: radial-gradient(60% 60% at 50% 10%, rgba(123,216,255,.20), transparent 60%); /* Cyan glow near top. */
-  opacity: 0; transition: opacity .25s ease;          /* Start invisible; fade in on hover. */
+/* --------- Floating controls (edit/delete) --------- */
+.controls{
+  position:absolute; top:10px; right:10px; z-index:5;
+  display:none; gap:8px;
 }
-.card:hover::after { opacity: .9; }                   /* Strong glow on hover. */
+.editing .controls{ display:flex; }
+.icon-btn{
+  width:36px; height:36px; display:grid; place-items:center;
+  border-radius:999px;
+  border:1px solid var(--ring);
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  cursor:pointer;
+}
+.icon-btn svg{ width:18px; height:18px; fill:#eaeaea; }
+.icon-btn:hover{ border-color:var(--ring-strong); }
+.icon-btn.delete{ background:rgba(150,0,0,.75); }
+.icon-btn.delete:hover{ background:rgba(180,0,0,.85); }
 
+/* --------- Price chip --------- */
+.price{
+  position:absolute; right:14px; bottom:12px;
+  font-weight:700; font-size:14px; line-height:1; white-space:nowrap;
+  color:var(--accent);
+  background:rgba(123,216,255,.14);
+  border:1px solid rgba(123,216,255,.28);
+  padding:5px 10px;
+  border-radius:12px;
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  transition:background .25s, border-color .25s, transform .25s;
+}
+.card:hover .price{
+  background:rgba(123,216,255,.20);
+  border-color:rgba(123,216,255,.38);
+  transform:translateY(-1px);
+}
 
 /* ================= 9) FORM GOODIES (badges, toggle, preview) ============ */
 /* Reusable pill buttons (menu/look-like, submit, etc.) */
