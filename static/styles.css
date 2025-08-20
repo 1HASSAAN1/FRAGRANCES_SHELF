@@ -536,3 +536,60 @@ body.editing .edit-only {
   flex: 1;
   margin: 0 0.25rem;
 }
+/* ===== Toasts ===== */
+.toast-host {
+  position: fixed;
+  z-index: 3000;
+  right: 18px;
+  bottom: 18px;
+  display: grid;
+  gap: 10px;
+}
+.toast {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(24,24,24,.9);
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,.4);
+  color: #f3f3f3;
+  animation: toastIn .2s ease-out;
+}
+.toast.success { border-color: rgba(123,216,255,.35); }
+.toast.error   { border-color: rgba(255,107,107,.45); }
+.toast .icon { font-size: 18px; line-height: 1; opacity: .9; }
+.toast .msg  { font-size: 14px; }
+.toast .close {
+  margin-left: 6px;
+  opacity: .7;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font-size: 16px;
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Button loading spinner ===== */
+.badge.loading {
+  position: relative;
+  pointer-events: none;
+  opacity: .8;
+}
+.badge.loading::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.35);
+  border-top-color: rgba(255,255,255,.9);
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

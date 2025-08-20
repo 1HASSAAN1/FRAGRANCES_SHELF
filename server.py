@@ -1,8 +1,9 @@
-# server.py — cache-busting with version stamps
-from flask import Flask, jsonify, request, send_from_directory, render_template_string ,session
+# server.py - cache-busting with version stamps + auth gate on writes
+from flask import Flask, jsonify, request, send_from_directory, render_template_string, session
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from PIL import Image
+from functools import wraps
 import json, os, tempfile, time
 from json import JSONDecodeError
 
@@ -26,18 +27,27 @@ app = Flask(__name__)
 CORS(app)
 
 app.config["MAX_CONTENT_LENGTH"] = 30 * 1024 * 1024
-app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 31536000  # 1y
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 31536000  # 1 year
+app.secret_key = "super-secret-key-change-me"  # required for sessions
 
-app.secret_key = "super-secret-key-change-me"  # 🔑 required for sessions
+# -------- auth utility --------
+def login_required(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        if not session.get("logged_in"):
+            return jsonify({"ok": False, "error": "auth required"}), 401
+        return fn(*args, **kwargs)
+    return wrapper
 
-# ---- login routes ----
+# -------- auth routes --------
 @app.post("/api/login")
 def login():
     data = request.get_json(force=True) or {}
     username = data.get("username")
     password = data.get("password")
-    if username == "admin" and password == "perfume123":   # ✅ change credentials
+    if username == "admin" and password == "perfume123":  # change in real use
         session["logged_in"] = True
+        session["username"] = username
         return jsonify({"ok": True})
     return jsonify({"ok": False, "error": "invalid credentials"}), 401
 
@@ -51,7 +61,6 @@ def status():
     return jsonify({"logged_in": session.get("logged_in", False)})
 
 # -------- static with cache headers --------
-
 @app.get("/static/<path:path>")
 def static_files(path):
     resp = send_from_directory(STATIC_DIR, path)
@@ -86,7 +95,6 @@ def save_json(path: str, data):
     os.replace(tmp, path)
 
 def versioned(path: str) -> str:
-    """Return /static/path?v=last_modified_timestamp"""
     full = os.path.join(STATIC_DIR, path)
     v = int(os.path.getmtime(full)) if os.path.exists(full) else int(time.time())
     return f"/static/{path}?v={v}"
@@ -112,6 +120,7 @@ def wishlist_page():
 
 # -------- uploads --------
 @app.post("/api/upload-image")
+@login_required
 def upload_image():
     if "file" not in request.files:
         return jsonify({"ok": False, "error": "no file"}), 400
@@ -159,6 +168,7 @@ def get_perfumes():
     return jsonify(load_json(PERFUMES_PATH))
 
 @app.post("/api/perfumes")
+@login_required
 def upsert_perfume():
     item  = request.get_json(force=True) or {}
     name  = (item.get("name") or "").strip()
@@ -178,6 +188,7 @@ def upsert_perfume():
     return jsonify({"ok": True, "id": item["id"], "mode": "created"})
 
 @app.delete("/api/perfumes/<pid>")
+@login_required
 def delete_perfume(pid):
     data = load_json(PERFUMES_PATH)
     new  = [p for p in data if str(p.get("id")) != str(pid)]
@@ -190,6 +201,7 @@ def get_wishlist():
     return jsonify(load_json(WISHLIST_PATH))
 
 @app.post("/api/wishlist")
+@login_required
 def upsert_wishlist():
     item  = request.get_json(force=True) or {}
     name  = (item.get("name") or "").strip()
@@ -209,6 +221,7 @@ def upsert_wishlist():
     return jsonify({"ok": True, "id": item["id"], "mode": "created"})
 
 @app.delete("/api/wishlist/<pid>")
+@login_required
 def delete_wishlist(pid):
     data = load_json(WISHLIST_PATH)
     new  = [p for p in data if str(p.get("id")) != str(pid)]
