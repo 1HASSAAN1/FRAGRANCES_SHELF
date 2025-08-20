@@ -228,61 +228,74 @@ addForm?.addEventListener("submit", async (e) => {
 });
 
 // ========= Edit toggle =========
-async function requireLogin() {
-  const res = await fetch("/api/status");
-  const { logged_in } = await res.json();
-  if (logged_in) return true;
+// ========= Login Modal =========
+const loginModal = document.getElementById("loginModal");
+const loginForm = document.getElementById("loginForm");
+const loginUser = document.getElementById("loginUser");
+const loginPass = document.getElementById("loginPass");
+const loginCancel = document.getElementById("loginCancel");
 
-  // not logged in → ask for credentials
-  const username = prompt("Enter username:");
-  const password = prompt("Enter password:");
-  if (!username || !password) return false;
+function openLoginModal() {
+  loginModal.classList.remove("hidden");
+  loginUser.focus();
+}
 
-  const loginRes = await fetch("/api/login", {
+function closeLoginModal() {
+  loginModal.classList.add("hidden");
+  loginForm.reset();
+}
+
+async function doLogin(username, password) {
+  const r = await fetch("/api/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password })
   });
-  return loginRes.ok;
+  return r.ok;
 }
 
-editToggle?.addEventListener("change", async (e) => {
-  if (e.target.checked) {
+loginForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const ok = await doLogin(loginUser.value, loginPass.value);
+  if (ok) {
+    closeLoginModal();
+    await updateLoginUI();
+    if (editToggle) {
+      editToggle.checked = true;
+      document.body.classList.add("editing");
+    }
+  } else {
+    alert("Login failed.");
+  }
+});
+
+loginCancel?.addEventListener("click", closeLoginModal);
+
+async function requireLogin() {
+  const r = await fetch("/api/status");
+  const { logged_in } = await r.json();
+  if (logged_in) return true;
+  openLoginModal();
+  return new Promise((resolve) => {
+    loginForm.addEventListener("submit", () => resolve(true), { once: true });
+    loginCancel.addEventListener("click", () => resolve(false), { once: true });
+  });
+}
+// ========= Edit toggle (login gated) =========
+editToggle?.addEventListener("change", async () => {
+  if (editToggle.checked) {
+    // User wants to enable editing → must be logged in
     const ok = await requireLogin();
     if (!ok) {
-      alert("Login failed.");
-      e.target.checked = false;
+      editToggle.checked = false;
+      document.body.classList.remove("editing");
       return;
     }
   }
   document.body.classList.toggle("editing", !!editToggle.checked);
 });
 
-// ========= Logout =========
-const logoutBtn = document.getElementById("logoutBtn");
 
-async function updateLoginUI() {
-  const r = await fetch("/api/status");
-  const { logged_in } = await r.json();
-  if (logged_in) {
-    logoutBtn?.classList.remove("hidden");
-  } else {
-    logoutBtn?.classList.add("hidden");
-    if (editToggle) {
-      editToggle.checked = false;
-      document.body.classList.remove("editing");
-    }
-  }
-}
-
-logoutBtn?.addEventListener("click", async () => {
-  await fetch("/api/logout", { method: "POST" });
-  alert("Logged out.");
-  await updateLoginUI();
-});
-
-// Run once on page load
-updateLoginUI();
 
 // ========= Hover Zoom =========
 function bindZoomHandlers() {

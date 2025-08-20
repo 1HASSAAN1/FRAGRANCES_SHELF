@@ -82,6 +82,29 @@
       });
     })();
   </script>
+<!-- Login Modal -->
+<div id="loginModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Login Required</h2>
+    <form id="loginForm">
+      <label>
+        Username
+        <input id="loginUser" type="text" required />
+      </label>
+      <label>
+        Password
+        <input id="loginPass" type="password" required />
+      </label>
+      <div class="modal-actions">
+        <button type="submit" class="badge">Login</button>
+        <button type="button" id="loginCancel" class="badge secondary">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
 </body>
+
 </html>
 
