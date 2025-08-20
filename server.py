@@ -1,5 +1,5 @@
 # server.py — cache-busting with version stamps
-from flask import Flask, jsonify, request, send_from_directory, render_template_string
+from flask import Flask, jsonify, request, send_from_directory, render_template_string ,session
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from PIL import Image
@@ -28,7 +28,30 @@ CORS(app)
 app.config["MAX_CONTENT_LENGTH"] = 30 * 1024 * 1024
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 31536000  # 1y
 
+app.secret_key = "super-secret-key-change-me"  # 🔑 required for sessions
+
+# ---- login routes ----
+@app.post("/api/login")
+def login():
+    data = request.get_json(force=True) or {}
+    username = data.get("username")
+    password = data.get("password")
+    if username == "admin" and password == "perfume123":   # ✅ change credentials
+        session["logged_in"] = True
+        return jsonify({"ok": True})
+    return jsonify({"ok": False, "error": "invalid credentials"}), 401
+
+@app.post("/api/logout")
+def logout():
+    session.clear()
+    return jsonify({"ok": True})
+
+@app.get("/api/status")
+def status():
+    return jsonify({"logged_in": session.get("logged_in", False)})
+
 # -------- static with cache headers --------
+
 @app.get("/static/<path:path>")
 def static_files(path):
     resp = send_from_directory(STATIC_DIR, path)

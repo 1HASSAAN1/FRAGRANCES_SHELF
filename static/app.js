@@ -228,9 +228,61 @@ addForm?.addEventListener("submit", async (e) => {
 });
 
 // ========= Edit toggle =========
-editToggle?.addEventListener("change", () => {
+async function requireLogin() {
+  const res = await fetch("/api/status");
+  const { logged_in } = await res.json();
+  if (logged_in) return true;
+
+  // not logged in → ask for credentials
+  const username = prompt("Enter username:");
+  const password = prompt("Enter password:");
+  if (!username || !password) return false;
+
+  const loginRes = await fetch("/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
+  return loginRes.ok;
+}
+
+editToggle?.addEventListener("change", async (e) => {
+  if (e.target.checked) {
+    const ok = await requireLogin();
+    if (!ok) {
+      alert("Login failed.");
+      e.target.checked = false;
+      return;
+    }
+  }
   document.body.classList.toggle("editing", !!editToggle.checked);
 });
+
+// ========= Logout =========
+const logoutBtn = document.getElementById("logoutBtn");
+
+async function updateLoginUI() {
+  const r = await fetch("/api/status");
+  const { logged_in } = await r.json();
+  if (logged_in) {
+    logoutBtn?.classList.remove("hidden");
+  } else {
+    logoutBtn?.classList.add("hidden");
+    if (editToggle) {
+      editToggle.checked = false;
+      document.body.classList.remove("editing");
+    }
+  }
+}
+
+logoutBtn?.addEventListener("click", async () => {
+  await fetch("/api/logout", { method: "POST" });
+  alert("Logged out.");
+  await updateLoginUI();
+});
+
+// Run once on page load
+updateLoginUI();
 
 // ========= Hover Zoom =========
 function bindZoomHandlers() {
